@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+
+<div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg hidden md:block shrink-0">
+  <div class="p-5 border-b">
+    <h1 class="text-xl font-bold text-gray-800"><i class="fas fa-cubes mr-2"></i>CRM</h1>
+  </div>
+  <nav class="p-3 space-y-0.5 overflow-y-auto max-h-[calc(100vh-65px)]">
+    <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-white bg-blue-600"><i class="fas fa-th-large w-4 text-center"></i> Dashboard</a>
+    <a href="notifications.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-bell w-4 text-center"></i> Notifications</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="customers.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-users w-4 text-center"></i> Customers</a>
+    <a href="contacts.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-address-book w-4 text-center"></i> Contacts</a>
+    <a href="leads.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-filter w-4 text-center"></i> Leads</a>
+    <a href="pipeline.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-columns w-4 text-center"></i> Pipeline</a>
+    <a href="opportunities.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-handshake w-4 text-center"></i> Opportunities</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="tasks.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-check-circle w-4 text-center"></i> Tasks</a>
+    <a href="activities.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-running w-4 text-center"></i> Activities</a>
+    <a href="followups.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-redo w-4 text-center"></i> Follow-ups</a>
+    <a href="calendar.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-calendar w-4 text-center"></i> Calendar</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="quotations.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-file-invoice w-4 text-center"></i> Quotations</a>
+    <a href="sales-orders.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-truck w-4 text-center"></i> Sales Orders</a>
+    <a href="invoices.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-receipt w-4 text-center"></i> Invoices</a>
+    <a href="payments.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-credit-card w-4 text-center"></i> Payments</a>
+    <a href="products.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-box w-4 text-center"></i> Products</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="chat.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-comment-dots w-4 text-center"></i> Chat</a>
+    <a href="email.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-envelope w-4 text-center"></i> Email</a>
+    <a href="notes.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-sticky-note w-4 text-center"></i> Notes</a>
+    <a href="files.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-folder w-4 text-center"></i> Files</a>
+    <a href="timeline.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-stream w-4 text-center"></i> Timeline</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="tickets.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-headset w-4 text-center"></i> Tickets</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="users.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-user-shield w-4 text-center"></i> Users</a>
+    <a href="tags.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-tags w-4 text-center"></i> Tags</a>
+    <a href="reports.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-chart-bar w-4 text-center"></i> Reports</a>
+    <a href="settings.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-cog w-4 text-center"></i> Settings</a>
+    <a href="audit-logs.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-history w-4 text-center"></i> Audit Logs</a>
+    <a href="api.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-code w-4 text-center"></i> API</a>
+  </nav>
+</aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- Topbar -->
+        <header class="bg-white shadow px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <h2 class="text-lg font-semibold text-gray-800">Dashboard</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <input type="text" placeholder="Search..." class="pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
+                </div>
+                <i class="fas fa-bell text-gray-500 text-lg cursor-pointer"></i>
+                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">JD</div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Total Leads</p>
+                        <p class="text-2xl font-bold">1,284</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                        <i class="fas fa-address-book text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Contacts</p>
+                        <p class="text-2xl font-bold">3,671</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
+                        <i class="fas fa-handshake text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Active Deals</p>
+                        <p class="text-2xl font-bold">47</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-5 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        <i class="fas fa-dollar-sign text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Revenue</p>
+                        <p class="text-2xl font-bold">$128K</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Leads -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b flex items-center justify-between">
+                    <h3 class="font-semibold text-gray-800">Recent Leads</h3>
+                    <a href="#" class="text-sm text-blue-600 hover:underline">View All</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                            <tr>
+                                <th class="text-left px-6 py-3">Name</th>
+                                <th class="text-left px-6 py-3">Email</th>
+                                <th class="text-left px-6 py-3">Status</th>
+                                <th class="text-left px-6 py-3">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">John Doe</td>
+                                <td class="px-6 py-4">john@example.com</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Qualified</span></td>
+                                <td class="px-6 py-4">$12,000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">Jane Smith</td>
+                                <td class="px-6 py-4">jane@example.com</td>
+                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">Pending</span></td>
+                                <td class="px-6 py-4">$8,500</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">Mike Johnson</td>
+                                <td class="px-6 py-4">mike@example.com</td>
+                                <td class="px-6 py-4"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">New</span></td>
+                                <td class="px-6 py-4">$5,000</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">Sarah Wilson</td>
+                                <td class="px-6 py-4">sarah@example.com</td>
+                                <td class="px-6 py-4"><span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs">Lost</span></td>
+                                <td class="px-6 py-4">$3,200</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</div>
+
+</body>
+</html>

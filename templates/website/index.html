@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sterling Estates - Premium Real Estate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-building text-blue-600 text-2xl"></i>
+                    <span class="text-xl font-bold text-gray-800">Sterling Estates</span>
+                </div>
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+                    <a href="#home" class="text-blue-600">Home</a>
+                    <a href="#properties" class="hover:text-blue-600">Properties</a>
+                    <a href="#services" class="hover:text-blue-600">Services</a>
+                    <a href="#about" class="hover:text-blue-600">About</a>
+                    <a href="#contact" class="hover:text-blue-600">Contact</a>
+                </div>
+                <a href="#contact" class="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Enquire Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="home" class="bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight">Find Your Dream Home With Sterling Estates</h1>
+                <p class="mt-4 text-lg text-blue-100 leading-relaxed">Expert guidance through every step of your property journey — whether you're buying, selling, letting, or investing across the UK.</p>
+                <div class="mt-8 flex gap-4">
+                    <a href="#properties" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50">Browse Properties</a>
+                    <a href="#contact" class="border border-blue-300 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700">Book a Valuation</a>
+                </div>
+            </div>
+            <!-- Quick Search -->
+            <div class="mt-12 bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <select class="w-full px-4 py-2.5 border border-white/20 bg-white/10 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option class="text-gray-800">Any Type</option>
+                        <option class="text-gray-800">House</option>
+                        <option class="text-gray-800">Flat</option>
+                        <option class="text-gray-800">Bungalow</option>
+                        <option class="text-gray-800">Mansion</option>
+                    </select>
+                    <select class="w-full px-4 py-2.5 border border-white/20 bg-white/10 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option class="text-gray-800">Min Price</option>
+                        <option class="text-gray-800">&pound;100,000</option>
+                        <option class="text-gray-800">&pound;250,000</option>
+                        <option class="text-gray-800">&pound;500,000</option>
+                        <option class="text-gray-800">&pound;750,000</option>
+                        <option class="text-gray-800">&pound;1,000,000+</option>
+                    </select>
+                    <select class="w-full px-4 py-2.5 border border-white/20 bg-white/10 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option class="text-gray-800">Max Price</option>
+                        <option class="text-gray-800">&pound;250,000</option>
+                        <option class="text-gray-800">&pound;500,000</option>
+                        <option class="text-gray-800">&pound;750,000</option>
+                        <option class="text-gray-800">&pound;1,000,000</option>
+                        <option class="text-gray-800">&pound;2,000,000+</option>
+                    </select>
+                    <button class="bg-white text-blue-600 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-50">
+                        <i class="fas fa-search mr-1"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <div class="bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <p class="text-3xl font-bold text-blue-600">500+</p>
+                    <p class="text-sm text-gray-500">Properties Sold</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-green-600">98%</p>
+                    <p class="text-sm text-gray-500">Client Satisfaction</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-purple-600">15+</p>
+                    <p class="text-sm text-gray-500">Years Experience</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-bold text-yellow-600">5</p>
+                    <p class="text-sm text-gray-500">UK Offices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Properties -->
+    <section id="properties" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="flex items-center justify-between mb-12">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Featured Properties</h2>
+                <p class="mt-1 text-gray-500">Handpicked homes across the UK</p>
+            </div>
+            <a href="#" class="text-sm text-blue-600 hover:underline font-medium">View All &rarr;</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+                <div class="h-48 bg-blue-100 flex items-center justify-center text-blue-400 relative">
+                    <i class="fas fa-home text-5xl"></i>
+                    <span class="absolute top-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">For Sale</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-semibold text-gray-800">The Willows</h3>
+                    <p class="text-sm text-gray-500 mt-1"><i class="fas fa-map-marker-alt text-blue-600 w-4"></i> Bath, Somerset</p>
+                    <div class="flex gap-4 my-3 text-sm text-gray-500">
+                        <span><i class="fas fa-bed text-blue-600"></i> 4</span>
+                        <span><i class="fas fa-bath text-blue-600"></i> 3</span>
+                        <span><i class="fas fa-vector-square text-blue-600"></i> 1,800 sq ft</span>
+                    </div>
+                    <hr class="my-3 border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-blue-600">&pound;675,000</span>
+                        <button class="text-sm text-blue-600 hover:underline font-medium">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+                <div class="h-48 bg-purple-100 flex items-center justify-center text-purple-400 relative">
+                    <i class="fas fa-city text-5xl"></i>
+                    <span class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">To Let</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-semibold text-gray-800">Harbour View Apartments</h3>
+                    <p class="text-sm text-gray-500 mt-1"><i class="fas fa-map-marker-alt text-blue-600 w-4"></i> Brighton, East Sussex</p>
+                    <div class="flex gap-4 my-3 text-sm text-gray-500">
+                        <span><i class="fas fa-bed text-blue-600"></i> 2</span>
+                        <span><i class="fas fa-bath text-blue-600"></i> 1</span>
+                        <span><i class="fas fa-vector-square text-blue-600"></i> 850 sq ft</span>
+                    </div>
+                    <hr class="my-3 border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-blue-600">&pound;1,450<span class="text-sm font-normal text-gray-500">/mo</span></span>
+                        <button class="text-sm text-blue-600 hover:underline font-medium">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition">
+                <div class="h-48 bg-green-100 flex items-center justify-center text-green-400 relative">
+                    <i class="fas fa-warehouse text-5xl"></i>
+                    <span class="absolute top-3 left-3 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">For Sale</span>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-semibold text-gray-800">Manor Farm Cottage</h3>
+                    <p class="text-sm text-gray-500 mt-1"><i class="fas fa-map-marker-alt text-blue-600 w-4"></i> Cotswolds, Gloucestershire</p>
+                    <div class="flex gap-4 my-3 text-sm text-gray-500">
+                        <span><i class="fas fa-bed text-blue-600"></i> 3</span>
+                        <span><i class="fas fa-bath text-blue-600"></i> 2</span>
+                        <span><i class="fas fa-vector-square text-blue-600"></i> 1,400 sq ft</span>
+                    </div>
+                    <hr class="my-3 border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-blue-600">&pound;495,000</span>
+                        <button class="text-sm text-blue-600 hover:underline font-medium">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Our Services</h2>
+                <p class="mt-2 text-gray-500">Comprehensive property services tailored to you</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+                        <i class="fas fa-search-plus text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Buying</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">From first-time buyers to seasoned investors, we help you find and secure the perfect property at the right price.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-green-600 mb-4">
+                        <i class="fas fa-tag text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Selling</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Maximise your home's value with expert staging, professional photography, and targeted marketing across major portals.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 mb-4">
+                        <i class="fas fa-key text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Lettings</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Full property management and tenant find services for landlords, with guaranteed rent options available.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 hover:shadow-md transition">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center text-yellow-600 mb-4">
+                        <i class="fas fa-calculator text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Valuations</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">RICS-accredited valuations for mortgage, probate, inheritance tax, and sale purposes with same-day reports.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Why Choose Sterling Estates?</h2>
+                <p class="mt-4 text-gray-600 leading-relaxed">With over 15 years of experience across the UK property market, Sterling Estates has built a reputation for integrity, market knowledge, and exceptional client care. We don't just sell houses — we help people find homes and make life-changing property decisions with confidence.</p>
+                <p class="mt-4 text-gray-600 leading-relaxed">Our team of qualified agents covers residential sales, lettings, and commercial property across the South East, London, and the Cotswolds. Every client receives a dedicated personal agent and access to our full network of buyers, landlords, and industry partners.</p>
+                <div class="mt-6 flex flex-wrap gap-4">
+                    <span class="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-1.5 rounded-full">RICS Registered</span>
+                    <span class="bg-green-100 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">The Property Ombudsman</span>
+                    <span class="bg-purple-100 text-purple-700 text-xs font-medium px-3 py-1.5 rounded-full">UKALA Accredited</span>
+                </div>
+            </div>
+            <div class="bg-blue-50 rounded-xl h-80 flex items-center justify-center text-blue-300">
+                <i class="fas fa-handshake text-6xl"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Get In Touch</h2>
+                <p class="mt-2 text-gray-500">Ready to take the next step? We're here to help.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                    <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-gray-500 font-medium">Full Name</label>
+                            <input type="text" class="w-full px-4 py-2.5 border rounded-lg text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 font-medium">Email Address</label>
+                            <input type="email" class="w-full px-4 py-2.5 border rounded-lg text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 font-medium">Phone Number</label>
+                            <input type="tel" class="w-full px-4 py-2.5 border rounded-lg text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-500 font-medium">I'm looking to</label>
+                            <select class="w-full px-4 py-2.5 border rounded-lg text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Buy a property</option>
+                                <option>Sell my property</option>
+                                <option>Rent a property</option>
+                                <option>Get a valuation</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-xs text-gray-500 font-medium">Message</label>
+                            <textarea rows="4" class="w-full px-4 py-2.5 border rounded-lg text-sm mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Tell us about your requirements..."></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-blue-700">Send Enquiry</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+                    <h3 class="font-semibold text-gray-800 mb-4">Contact Details</h3>
+                    <div class="space-y-4 text-sm text-gray-600">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-blue-600 mt-1 w-4"></i>
+                            <span>Sterling House, 42 Market Square<br>Bath, BA1 1AB<br>United Kingdom</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-phone text-blue-600 w-4"></i>
+                            <span>+44 (0) 1225 123456</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-blue-600 w-4"></i>
+                            <span>info@sterlingestates.co.uk</span>
+                        </div>
+                        <hr class="my-4 border-gray-100">
+                        <div>
+                            <p class="font-semibold text-gray-800 mb-1">Office Hours</p>
+                            <p class="text-xs">Mon-Fri: 9:00 - 18:00</p>
+                            <p class="text-xs">Saturday: 10:00 - 16:00</p>
+                            <p class="text-xs">Sunday: By appointment</p>
+                        </div>
+                    </div>
+                    <hr class="my-6 border-gray-100">
+                    <div class="flex gap-4 text-gray-400">
+                        <a href="#" class="hover:text-blue-600"><i class="fab fa-instagram text-xl"></i></a>
+                        <a href="#" class="hover:text-blue-600"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="hover:text-blue-600"><i class="fab fa-linkedin text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-building text-blue-500 text-xl"></i>
+                        <span class="text-lg font-bold text-white">Sterling Estates</span>
+                    </div>
+                    <p class="mt-3 text-sm leading-relaxed">Premium real estate services across the UK. Trusted, professional, and committed to finding the perfect property for every client.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-3">Quick Links</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="#properties" class="block hover:text-blue-400">Properties</a>
+                        <a href="#services" class="block hover:text-blue-400">Services</a>
+                        <a href="#about" class="block hover:text-blue-400">About Us</a>
+                        <a href="#contact" class="block hover:text-blue-400">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-white mb-3">Legal</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="#" class="block hover:text-blue-400">Privacy Policy</a>
+                        <a href="#" class="block hover:text-blue-400">Terms of Use</a>
+                        <a href="#" class="block hover:text-blue-400">Cookie Policy</a>
+                        <a href="#" class="block hover:text-blue-400">Complaints</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-8 border-gray-800">
+            <div class="text-center text-sm">
+                &copy; 2026 Sterling Estates. All rights reserved. | Registered in England No. 09876543
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chat Widget -->
+    <div x-data="chatWidget()" class="fixed bottom-6 right-6 z-50">
+        <button @click="toggle()" x-show="!open" class="w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 flex items-center justify-center transition">
+            <i class="fas fa-comment-dots text-xl"></i>
+        </button>
+
+        <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" @click.away="open = false" class="absolute bottom-0 right-0 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="bg-blue-600 px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">SE</div>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Sterling Estates</p>
+                        <p class="text-[11px] text-blue-200">Online — reply in minutes</p>
+                    </div>
+                </div>
+                <button @click="open = false" class="text-blue-200 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="h-72 overflow-y-auto p-4 space-y-3 bg-gray-50" x-ref="messagesContainer">
+                <template x-for="(msg, i) in messages" :key="i">
+                    <div :class="msg.sent ? 'justify-end' : 'justify-start'" class="flex">
+                        <template x-if="!msg.sent">
+                            <div class="max-w-[80%] bg-white rounded-lg rounded-bl-none px-3 py-2 shadow-sm">
+                                <p class="text-sm text-gray-800" x-text="msg.text"></p>
+                                <span class="text-[10px] text-gray-400 mt-0.5 block" x-text="msg.time"></span>
+                            </div>
+                        </template>
+                        <template x-if="msg.sent">
+                            <div class="max-w-[80%] bg-blue-600 rounded-lg rounded-br-none px-3 py-2 shadow-sm">
+                                <p class="text-sm text-white" x-text="msg.text"></p>
+                                <span class="text-[10px] text-blue-200 mt-0.5 block" x-text="msg.time"></span>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template x-if="typing">
+                    <div class="flex justify-start">
+                        <div class="bg-white rounded-lg rounded-bl-none px-4 py-3 shadow-sm">
+                            <div class="flex gap-1">
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
+                                <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="border-t bg-white px-3 py-3">
+                <form @submit.prevent="sendMessage" class="flex items-center gap-2">
+                    <input type="text" x-model="newMessage" placeholder="Ask about a property..." class="flex-1 px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" :disabled="!newMessage.trim()" class="bg-blue-600 text-white p-2 rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chatWidget() {
+            return {
+                open: false,
+                newMessage: '',
+                typing: false,
+                messages: [
+                    { text: 'Welcome to Sterling Estates! Looking for a property to buy, rent, or interested in a valuation?', time: 'Just now', sent: false },
+                ],
+
+                toggle() {
+                    this.open = !this.open;
+                    if (this.open) this.$nextTick(() => this.scrollToBottom());
+                },
+
+                sendMessage() {
+                    if (!this.newMessage.trim()) return;
+                    const now = new Date();
+                    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    this.messages.push({ text: this.newMessage, time, sent: true });
+                    this.newMessage = '';
+                    this.$nextTick(() => this.scrollToBottom());
+
+                    this.typing = true;
+                    setTimeout(() => {
+                        this.typing = false;
+                        const replyTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const replies = [
+                            'Great choice! I\'ll send you a curated list of matching properties shortly.',
+                            'Lovely! Would you like to schedule a viewing this week?',
+                            'Excellent area. Let me check our latest listings in that postcode.',
+                            'Absolutely — we have a team member who specialises in that area. I\'ll connect you.',
+                        ];
+                        this.messages.push({ text: replies[Math.floor(Math.random() * replies.length)], time: replyTime, sent: false });
+                        this.$nextTick(() => this.scrollToBottom());
+                    }, 1500);
+                },
+
+                scrollToBottom() {
+                    const el = this.$refs.messagesContainer;
+                    if (el) el.scrollTop = el.scrollHeight;
+                }
+            };
+        }
+    </script>
+
+</body>
+</html>

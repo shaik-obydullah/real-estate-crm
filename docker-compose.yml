@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: tall_nginx
+    ports:
+      - "8020:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - tall_network
+
+  php:
+    image: php:8.5-fpm
+    container_name: tall_php
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - tall_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: tall_mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tall_app
+      MYSQL_USER: tall_user
+      MYSQL_PASSWORD: tall_pass
+    volumes:
+      - tall_mysql_data:/var/lib/mysql
+    networks:
+      - tall_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: tall_phpmyadmin
+    ports:
+      - "8021:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - tall_network
+
+  node:
+    image: node:20-alpine
+    container_name: tall_node
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - tall_network
+
+volumes:
+  tall_mysql_data:
+
+networks:
+  tall_network:
+    driver: bridge

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Follow-ups - CRM</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+  <div class="flex min-h-screen">
+    <aside class="w-64 bg-white shadow-lg hidden md:block shrink-0">
+  <div class="p-5 border-b">
+    <h1 class="text-xl font-bold text-gray-800"><i class="fas fa-cubes mr-2"></i>CRM</h1>
+  </div>
+  <nav class="p-3 space-y-0.5 overflow-y-auto max-h-[calc(100vh-65px)]">
+    <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-th-large w-4 text-center"></i> Dashboard</a>
+    <a href="notifications.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-bell w-4 text-center"></i> Notifications</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="customers.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-users w-4 text-center"></i> Customers</a>
+    <a href="contacts.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-address-book w-4 text-center"></i> Contacts</a>
+    <a href="leads.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-filter w-4 text-center"></i> Leads</a>
+    <a href="pipeline.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-columns w-4 text-center"></i> Pipeline</a>
+    <a href="opportunities.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-handshake w-4 text-center"></i> Opportunities</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="tasks.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-check-circle w-4 text-center"></i> Tasks</a>
+    <a href="activities.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-running w-4 text-center"></i> Activities</a>
+    <a href="#" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-white bg-blue-600"><i class="fas fa-redo w-4 text-center"></i> Follow-ups</a>
+    <a href="calendar.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-calendar w-4 text-center"></i> Calendar</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="quotations.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-file-invoice w-4 text-center"></i> Quotations</a>
+    <a href="sales-orders.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-truck w-4 text-center"></i> Sales Orders</a>
+    <a href="invoices.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-receipt w-4 text-center"></i> Invoices</a>
+    <a href="payments.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-credit-card w-4 text-center"></i> Payments</a>
+    <a href="products.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-box w-4 text-center"></i> Products</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="chat.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-comment-dots w-4 text-center"></i> Chat</a>
+    <a href="email.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-envelope w-4 text-center"></i> Email</a>
+    <a href="notes.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-sticky-note w-4 text-center"></i> Notes</a>
+    <a href="files.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-folder w-4 text-center"></i> Files</a>
+    <a href="timeline.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-stream w-4 text-center"></i> Timeline</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="tickets.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-headset w-4 text-center"></i> Tickets</a>
+    <hr class="my-1.5 border-gray-100">
+    <a href="users.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-user-shield w-4 text-center"></i> Users</a>
+    <a href="tags.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-tags w-4 text-center"></i> Tags</a>
+    <a href="reports.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-chart-bar w-4 text-center"></i> Reports</a>
+    <a href="settings.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-cog w-4 text-center"></i> Settings</a>
+    <a href="audit-logs.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-history w-4 text-center"></i> Audit Logs</a>
+    <a href="api.html" class="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-gray-600 hover:bg-gray-100"><i class="fas fa-code w-4 text-center"></i> API</a>
+  </nav>
+</aside>
+
+    <main class="flex-1 p-6">
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Follow-ups</h2>
+          <p class="text-sm text-gray-500 flex items-center gap-2 mt-1">
+            <span class="flex items-center gap-1 text-red-600 font-medium"><span class="w-2 h-2 bg-red-500 rounded-full"></span> 4 overdue</span>
+            <span class="flex items-center gap-1 text-yellow-600 font-medium"><span class="w-2 h-2 bg-yellow-500 rounded-full"></span> 7 due this week</span>
+          </p>
+        </div>
+        <div class="flex gap-2 mt-2 sm:mt-0">
+          <div class="relative">
+            <input type="text" placeholder="Search follow-ups..." class="pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+            <svg class="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+          <a href="followup-form.html" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">+ New Follow-up</a>
+        </div>
+      </div>
+
+      <!-- Summary cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+          <p class="text-xs text-gray-500">Total Pending</p>
+          <p class="text-2xl font-bold text-gray-800">23</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+          <p class="text-xs text-gray-500">Due This Week</p>
+          <p class="text-2xl font-bold text-yellow-600">7</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+          <p class="text-xs text-gray-500">Overdue</p>
+          <p class="text-2xl font-bold text-red-600">4</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
+          <p class="text-xs text-gray-500">Completed This Month</p>
+          <p class="text-2xl font-bold text-green-600">18</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+        <div class="flex flex-wrap gap-3 items-center">
+          <select class="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>All Statuses</option>
+            <option>Pending</option>
+            <option>Completed</option>
+            <option>Overdue</option>
+          </select>
+          <select class="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>All Types</option>
+            <option>Call</option>
+            <option>Meeting</option>
+            <option>Email</option>
+          </select>
+          <select class="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option>All Priorities</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+          <button class="px-3 py-2 text-sm text-gray-600 border rounded-lg hover:bg-gray-50">More Filters</button>
+          <span class="text-sm text-gray-400 ml-auto">Showing 1-6 of 23</span>
+        </div>
+      </div>
+
+      <!-- Follow-ups List -->
+      <div class="space-y-3">
+        <!-- Overdue item -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Overdue</span>
+                  <span class="text-sm font-semibold text-gray-800">Call with Alice Liu re: proposal</span>
+                </div>
+                <span class="text-xs text-red-600 font-medium">Due Jul 5, 2026</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Follow up on revised proposal scope and timeline for Q4 implementation.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Call</span>
+                <span>Acme Corp</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>High</span>
+                <span>Reminder: 1 day before</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overdue item -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-red-500 p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">Overdue</span>
+                  <span class="text-sm font-semibold text-gray-800">Send contract to Clara Nguyen</span>
+                </div>
+                <span class="text-xs text-red-600 font-medium">Due Jul 4, 2026</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Send the signed contract and onboarding documents for the security audit engagement.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>Email</span>
+                <span>TechLogix Inc</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>Medium</span>
+                <span>Reminder: 2 days before</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Due today -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-yellow-500 p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded-full">Due Today</span>
+                  <span class="text-sm font-semibold text-gray-800">Demo follow-up with Bob Richards</span>
+                </div>
+                <span class="text-xs text-yellow-600 font-medium">Today</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Bob requested trial access after the demo. Set up their team and send credentials.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Meeting</span>
+                <span>Acme Corp</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>High</span>
+                <span>Reminder: Same day</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Due this week -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500 p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Pending</span>
+                  <span class="text-sm font-semibold text-gray-800">Email Elena Martinez pricing</span>
+                </div>
+                <span class="text-xs text-gray-500">Due Jul 9, 2026</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Send the updated pricing for the consulting retainer renewal for Q3-Q4.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>Email</span>
+                <span>Globex LLC</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>Medium</span>
+                <span>Reminder: 1 day before</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-500 p-4 hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Pending</span>
+                  <span class="text-sm font-semibold text-gray-800">Schedule workshop with David Kim</span>
+                </div>
+                <span class="text-xs text-gray-500">Due Jul 12, 2026</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Coordinate with David's team for the API integration workshop. Prepare agenda and environment.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Meeting</span>
+                <span>TechLogix Inc</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>Medium</span>
+                <span>Reminder: 1 day before</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="bg-white rounded-xl shadow-sm border-l-4 border-green-500 p-4 hover:shadow-md transition-shadow opacity-70">
+          <div class="flex items-start gap-4">
+            <div class="flex items-center h-5 mt-1">
+              <input type="checkbox" class="rounded text-blue-600" checked>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Completed</span>
+                  <span class="text-sm font-semibold text-gray-500 line-through">Call with Frank Johnson</span>
+                </div>
+                <span class="text-xs text-green-600 font-medium">Completed Jul 6</span>
+              </div>
+              <p class="text-sm text-gray-400 mt-1">Discussed the Q3 engagement scope. Frank confirmed the budget allocation.</p>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-400">
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Call</span>
+                <span>Globex LLC</span>
+                <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>Low</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-between items-center mt-6">
+        <span class="text-sm text-gray-500">Showing 1-6 of 23</span>
+        <div class="flex gap-1">
+          <button class="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50">&laquo;</button>
+          <button class="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg">1</button>
+          <button class="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50">2</button>
+          <button class="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50">3</button>
+          <button class="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50">4</button>
+          <button class="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50">&raquo;</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
