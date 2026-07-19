@@ -1,0 +1,163 @@
+
+
+<div class="space-y-6">
+    {{-- Page Header --}}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900">Opportunities</h1>
+            <p class="text-sm text-gray-500">{{ $totalOpportunities }} total opportunities</p>
+        </div>
+        <a href="{{ route('opportunities.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition shadow-sm">
+            <i class="fas fa-plus"></i> Add Opportunity
+        </a>
+    </div>
+
+    @if (session('success'))
+    <div class="p-4 bg-green-50 border border-green-200 rounded-lg text-sm text-green-700 flex items-center gap-2">
+        <i class="fas fa-check-circle"></i> {{ session('success') }}
+    </div>
+    @endif
+
+    {{-- Table Card --}}
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+        {{-- Search & Filters --}}
+        <div class="p-4 border-b border-gray-100 space-y-3">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1 relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                    <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search opportunities..." class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                </div>
+                <select wire:model.live="stageFilter" class="px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                    <option value="">All Stages</option>
+                    <option value="new">New</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="meeting">Meeting</option>
+                    <option value="proposal">Proposal</option>
+                    <option value="negotiation">Negotiation</option>
+                    <option value="won">Won</option>
+                    <option value="lost">Lost</option>
+                </select>
+                <select wire:model.live="assignedFilter" class="px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                    <option value="">All Assigned</option>
+                    @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-left">
+                    <tr>
+                        <th class="px-6 py-3 w-10">
+                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" x-on:click="$wire.toggleSelectAll()">
+                        </th>
+                        <th class="px-6 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700" wire:click="sortBy('name')">
+                            <div class="flex items-center gap-1">
+                                Opportunity
+                                @if($sortBy === 'name')
+                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-blue-500"></i>
+                                @else
+                                <i class="fas fa-sort text-gray-300"></i>
+                                @endif
+                            </div>
+                        </th>
+                        <th class="px-6 py-3 font-medium text-gray-500 hidden md:table-cell">Company</th>
+                        <th class="px-6 py-3 font-medium text-gray-500 hidden md:table-cell">Expected Revenue</th>
+                        <th class="px-6 py-3 font-medium text-gray-500 hidden lg:table-cell">Closing Date</th>
+                        <th class="px-6 py-3 font-medium text-gray-500">Stage</th>
+                        <th class="px-6 py-3 font-medium text-gray-500 hidden lg:table-cell">Probability</th>
+                        <th class="px-6 py-3 font-medium text-gray-500 hidden xl:table-cell">Assigned</th>
+                        <th class="px-6 py-3 font-medium text-gray-500 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @forelse ($opportunities as $opp)
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4">
+                            <input type="checkbox" wire:model.live="selected" value="{{ $opp->id }}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        </td>
+                        <td class="px-6 py-4">
+                            <div>
+                                <p class="font-medium text-gray-900">{{ $opp->name }}</p>
+                                @if($opp->contact)
+                                <p class="text-xs text-gray-500">{{ $opp->contact->first_name }} {{ $opp->contact->last_name }}</p>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 hidden md:table-cell">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-building text-gray-400 text-xs"></i>
+                                {{ $opp->company_name ?? '-' }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 hidden md:table-cell">
+                            <span class="font-semibold text-green-600">${{ number_format($opp->value, 2) }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 hidden lg:table-cell text-xs">
+                            @if($opp->expected_closing_date)
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-calendar text-gray-400"></i>
+                                {{ $opp->expected_closing_date->format('M d, Y') }}
+                            </div>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $this->getStageBadgeClass($opp->stage) }}">
+                                {{ ucfirst($opp->stage) }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 hidden lg:table-cell">
+                            <div class="flex items-center gap-2">
+                                <div class="w-16 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full rounded-full {{ $opp->probability >= 75 ? 'bg-green-500' : ($opp->probability >= 50 ? 'bg-yellow-500' : 'bg-blue-500') }}" style="width: {{ $opp->probability }}%"></div>
+                                </div>
+                                <span class="text-xs font-medium text-gray-600">{{ $opp->probability }}%</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 hidden xl:table-cell">
+                            {{ $opp->assignedTo->name ?? '-' }}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-1">
+                                <a href="{{ route('opportunities.edit', $opp) }}" wire:navigate class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition" title="Edit">
+                                    <i class="fas fa-edit text-sm"></i>
+                                </a>
+                                <button wire:click="deleteOpportunity({{ $opp->id }})" onclick="return confirm('Are you sure you want to delete this opportunity?')" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Delete">
+                                    <i class="fas fa-trash text-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="9" class="px-6 py-16 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-handshake text-2xl text-gray-400"></i>
+                                </div>
+                                <p class="text-sm font-medium text-gray-900 mb-1">No opportunities found</p>
+                                <p class="text-sm text-gray-500 mb-4">Try adjusting your search or filters</p>
+                                <a href="{{ route('opportunities.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i> Add Opportunity
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+            <p class="text-sm text-gray-500">
+                Showing {{ $opportunities->firstItem() ?? 0 }} to {{ $opportunities->lastItem() ?? 0 }} of {{ $opportunities->total() }} opportunities
+            </p>
+            {{ $opportunities->links() }}
+        </div>
+    </div>
+</div>
