@@ -3,7 +3,8 @@ version: "3.9"
 services:
   nginx:
     image: nginx:alpine
-    container_name: tall_nginx
+    container_name: crm_nginx
+    restart: "no"
     ports:
       - "8020:80"
     volumes:
@@ -12,35 +13,37 @@ services:
     depends_on:
       - php
     networks:
-      - tall_network
+      - crm_network
 
   php:
-    image: php:8.5-fpm
-    container_name: tall_php
+    build: ./docker/php
+    container_name: crm_php
+    restart: "no"
     volumes:
       - ./src:/var/www/html
     networks:
-      - tall_network
+      - crm_network
 
   mysql:
     image: mysql:8.0
-    container_name: tall_mysql
-    restart: unless-stopped
+    container_name: crm_mysql
+    restart: "no"
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: tall_app
-      MYSQL_USER: tall_user
-      MYSQL_PASSWORD: tall_pass
+      MYSQL_DATABASE: crm_app
+      MYSQL_USER: crm_user
+      MYSQL_PASSWORD: crm_pass
     volumes:
-      - tall_mysql_data:/var/lib/mysql
+      - crm_mysql_data:/var/lib/mysql
     networks:
-      - tall_network
+      - crm_network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: tall_phpmyadmin
+    container_name: crm_phpmyadmin
+    restart: "no"
     ports:
       - "8021:80"
     environment:
@@ -50,11 +53,12 @@ services:
     depends_on:
       - mysql
     networks:
-      - tall_network
+      - crm_network
 
   node:
     image: node:20-alpine
-    container_name: tall_node
+    container_name: crm_node
+    restart: "no"
     working_dir: /var/www/html
     ports:
       - "5173:5173"
@@ -62,11 +66,11 @@ services:
       - ./src:/var/www/html
     command: sh -c "npm install && npm run dev"
     networks:
-      - tall_network
+      - crm_network
 
 volumes:
-  tall_mysql_data:
+  crm_mysql_data:
 
 networks:
-  tall_network:
+  crm_network:
     driver: bridge

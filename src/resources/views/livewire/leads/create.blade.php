@@ -43,27 +43,30 @@
                             <option value="new">New</option>
                             <option value="contacted">Contacted</option>
                             <option value="qualified">Qualified</option>
-                            <option value="proposal">Proposal Sent</option>
+                            <option value="proposal_sent">Proposal Sent</option>
                             <option value="negotiation">Negotiation</option>
+                            <option value="won">Won</option>
+                            <option value="lost">Lost</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Priority <span class="text-red-500">*</span></label>
                         <select wire:model="priority" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white transition">
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
                             <option value="high">High</option>
-                            <option value="urgent">Urgent</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Source</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Source <span class="text-red-500">*</span></label>
                         <select wire:model="source" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white transition">
                             <option value="website">Website</option>
                             <option value="referral">Referral</option>
                             <option value="social_media">Social Media</option>
-                            <option value="advertisement">Advertisement</option>
+                            <option value="email_campaign">Email Campaign</option>
                             <option value="cold_call">Cold Call</option>
+                            <option value="partner">Partner</option>
+                            <option value="event">Event</option>
                             <option value="other">Other</option>
                         </select>
                     </div>

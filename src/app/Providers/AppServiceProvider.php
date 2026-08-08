@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +17,18 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Gate::before(function (User $user, string $ability) {
+            if ($user->isAdmin()) {
+                return true;
+            }
+
+            return null;
+        });
+
+        Gate::define('permission', fn (User $user, string $permission) => $user->hasPermission($permission));
+
+        Blade::if('permission', fn (string $permission) => auth()->check() && auth()->user()->can('permission', $permission));
+
         Livewire::resolveMissingComponent(function ($name) {
             $class = str_replace(".", "\\", ucwords($name, "."));
             $class = str_replace("-", "", $class);

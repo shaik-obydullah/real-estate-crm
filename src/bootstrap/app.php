@@ -12,7 +12,27 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'permission' => \App\Http\Middleware\EnsurePermission::class,
+            'maintenance' => \App\Http\Middleware\CheckMaintenanceMode::class,
+        ]);
+
+        $middleware->redirectGuestsTo('/login');
+
+        $middleware->web(append: [
+            \App\Http\Middleware\ApplyAppSettings::class,
+            \App\Http\Middleware\CheckMaintenanceMode::class,
+        ]);
+
+        $middleware->prependToPriorityList(
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \App\Http\Middleware\CheckMaintenanceMode::class,
+        );
+
+        $middleware->prependToPriorityList(
+            \App\Http\Middleware\CheckMaintenanceMode::class,
+            \App\Http\Middleware\ApplyAppSettings::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

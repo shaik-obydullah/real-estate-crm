@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Auth\Login as AuthLogin;
+use App\Http\Livewire\Auth\Logout as AuthLogout;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Customers\Index as CustomersIndex;
 use App\Http\Livewire\Customers\Create as CustomersCreate;
@@ -32,6 +34,7 @@ use App\Http\Livewire\Settings\Index as SettingsIndex;
 use App\Http\Livewire\AuditLogs\Index as AuditLogsIndex;
 use App\Http\Livewire\Api\Index as ApiIndex;
 use App\Http\Livewire\Notifications\Index as NotificationsIndex;
+use App\Http\Livewire\Roles\Index as RolesIndex;
 use App\Http\Livewire\Activities\Create as ActivitiesCreate;
 use App\Http\Livewire\Activities\Edit as ActivitiesEdit;
 use App\Http\Livewire\Activities\Show as ActivitiesShow;
@@ -65,103 +68,112 @@ use App\Http\Livewire\Tasks\Create as TasksCreate;
 use App\Http\Livewire\Tasks\Edit as TasksEdit;
 use App\Http\Livewire\Tasks\Show as TasksShow;
 
-Route::get('/', Dashboard::class)->name('dashboard');
-Route::get('/dashboard', Dashboard::class);
+// Auth
+Route::get('/login', AuthLogin::class)->middleware('guest')->name('login');
+Route::get('/logout', AuthLogout::class)->middleware('auth')->name('logout');
 
-// CRM Core
-Route::get('/customers', CustomersIndex::class)->name('customers.index');
-Route::get('/customers/create', CustomersCreate::class)->name('customers.create');
-Route::get('/customers/{customer}/edit', CustomersEdit::class)->name('customers.edit');
-Route::get('/contacts', ContactsIndex::class)->name('contacts.index');
-Route::get('/leads', LeadsIndex::class)->name('leads.index');
-Route::get('/leads/create', LeadsCreate::class)->name('leads.create');
-Route::get('/pipeline', PipelineIndex::class)->name('pipeline.index');
-Route::get('/opportunities', OpportunitiesIndex::class)->name('opportunities.index');
+// Roles & Permissions (admin)
+Route::get('/roles', RolesIndex::class)->middleware(['auth', 'permission:roles.manage'])->name('roles.index');
 
-// Activities
-Route::get('/tasks', TasksIndex::class)->name('tasks.index');
-Route::get('/activities', ActivitiesIndex::class)->name('activities.index');
-Route::get('/followups', FollowupsIndex::class)->name('followups.index');
-Route::get('/calendar', CalendarIndex::class)->name('calendar.index');
+Route::middleware('auth')->group(function () {
+    Route::get('/', Dashboard::class)->middleware('permission:dashboard.view')->name('dashboard');
+    Route::get('/dashboard', Dashboard::class)->middleware('permission:dashboard.view');
 
-// Sales
-Route::get('/quotations', QuotationsIndex::class)->name('quotations.index');
-Route::get('/sales-orders', SalesOrdersIndex::class)->name('sales-orders.index');
-Route::get('/invoices', InvoicesIndex::class)->name('invoices.index');
-Route::get('/payments', PaymentsIndex::class)->name('payments.index');
-Route::get('/products', ProductsIndex::class)->name('products.index');
+    // CRM Core
+    Route::get('/customers', CustomersIndex::class)->middleware('permission:customers.view')->name('customers.index');
+    Route::get('/customers/create', CustomersCreate::class)->middleware('permission:customers.create')->name('customers.create');
+    Route::get('/customers/{customer}/edit', CustomersEdit::class)->middleware('permission:customers.edit')->name('customers.edit');
+    Route::get('/contacts', ContactsIndex::class)->middleware('permission:contacts.view')->name('contacts.index');
+    Route::get('/leads', LeadsIndex::class)->middleware('permission:leads.view')->name('leads.index');
+    Route::get('/leads/create', LeadsCreate::class)->middleware('permission:leads.create')->name('leads.create');
+    Route::get('/pipeline', PipelineIndex::class)->middleware('permission:pipeline.view')->name('pipeline.index');
+    Route::get('/opportunities', OpportunitiesIndex::class)->middleware('permission:opportunities.view')->name('opportunities.index');
 
-// Communication
-Route::get('/chat', ChatIndex::class)->name('chat.index');
-Route::get('/email', EmailIndex::class)->name('email.index');
-Route::get('/notes', NotesIndex::class)->name('notes.index');
-Route::get('/files', FilesIndex::class)->name('files.index');
-Route::get('/timeline', TimelineIndex::class)->name('timeline.index');
+    // Activities
+    Route::get('/tasks', TasksIndex::class)->middleware('permission:tasks.view')->name('tasks.index');
+    Route::get('/activities', ActivitiesIndex::class)->middleware('permission:activities.view')->name('activities.index');
+    Route::get('/followups', FollowupsIndex::class)->middleware('permission:followups.view')->name('followups.index');
+    Route::get('/calendar', CalendarIndex::class)->middleware('permission:calendar.view')->name('calendar.index');
 
-// Support
-Route::get('/tickets', TicketsIndex::class)->name('tickets.index');
+    // Sales
+    Route::get('/quotations', QuotationsIndex::class)->middleware('permission:quotations.view')->name('quotations.index');
+    Route::get('/sales-orders', SalesOrdersIndex::class)->middleware('permission:sales-orders.view')->name('sales-orders.index');
+    Route::get('/invoices', InvoicesIndex::class)->middleware('permission:invoices.view')->name('invoices.index');
+    Route::get('/payments', PaymentsIndex::class)->middleware('permission:payments.view')->name('payments.index');
+    Route::get('/products', ProductsIndex::class)->middleware('permission:products.view')->name('products.index');
 
-// Admin
-Route::get('/users', UsersIndex::class)->name('users.index');
-Route::get('/tags', TagsIndex::class)->name('tags.index');
-Route::get('/reports', ReportsIndex::class)->name('reports.index');
-Route::get('/settings', SettingsIndex::class)->name('settings.index');
-Route::get('/audit-logs', AuditLogsIndex::class)->name('audit-logs.index');
-Route::get('/api', ApiIndex::class)->name('api.index');
-Route::get('/notifications', NotificationsIndex::class)->name('notifications.index');
+    // Communication
+    Route::get('/chat', ChatIndex::class)->middleware('permission:chat.view')->name('chat.index');
+    Route::get('/email', EmailIndex::class)->middleware('permission:email.view')->name('email.index');
+    Route::get('/notes', NotesIndex::class)->middleware('permission:notes.view')->name('notes.index');
+    Route::get('/files', FilesIndex::class)->middleware('permission:files.view')->name('files.index');
+    Route::get('/timeline', TimelineIndex::class)->middleware('permission:timeline.view')->name('timeline.index');
 
-// Activities CRUD
-Route::get('/activities/create', ActivitiesCreate::class)->name('activities.create');
-Route::get('/activities/{activity}', ActivitiesShow::class)->name('activities.show');
-Route::get('/activities/{activity}/edit', ActivitiesEdit::class)->name('activities.edit');
+    // Support
+    Route::get('/tickets', TicketsIndex::class)->middleware('permission:tickets.view')->name('tickets.index');
 
-// Calendar CRUD
-Route::get('/calendar/create', CalendarCreate::class)->name('calendar.create');
-Route::get('/calendar/{event}', CalendarShow::class)->name('calendar.show');
-Route::get('/calendar/{event}/edit', CalendarEdit::class)->name('calendar.edit');
+    // Admin
+    Route::get('/users', UsersIndex::class)->middleware('permission:users.view')->name('users.index');
+    Route::get('/tags', TagsIndex::class)->middleware('permission:tags.manage')->name('tags.index');
+    Route::get('/reports', ReportsIndex::class)->middleware('permission:reports.view')->name('reports.index');
+    Route::get('/settings', SettingsIndex::class)->middleware('permission:settings.manage')->name('settings.index');
+    Route::get('/audit-logs', AuditLogsIndex::class)->middleware('permission:audit-logs.view')->name('audit-logs.index');
+    Route::get('/api', ApiIndex::class)->middleware('permission:api.manage')->name('api.index');
+    Route::get('/notifications', NotificationsIndex::class)->middleware('permission:notifications.view')->name('notifications.index');
 
-// Contacts CRUD
-Route::get('/contacts/create', ContactsCreate::class)->name('contacts.create');
-Route::get('/contacts/{contact}/edit', ContactsEdit::class)->name('contacts.edit');
+    // Activities CRUD
+    Route::get('/activities/create', ActivitiesCreate::class)->middleware('permission:activities.create')->name('activities.create');
+    Route::get('/activities/{activity}', ActivitiesShow::class)->middleware('permission:activities.view')->name('activities.show');
+    Route::get('/activities/{activity}/edit', ActivitiesEdit::class)->middleware('permission:activities.edit')->name('activities.edit');
 
-// Followups CRUD
-Route::get('/followups/create', FollowupsCreate::class)->name('followups.create');
-Route::get('/followups/{followup}', FollowupsShow::class)->name('followups.show');
-Route::get('/followups/{followup}/edit', FollowupsEdit::class)->name('followups.edit');
+    // Calendar CRUD
+    Route::get('/calendar/create', CalendarCreate::class)->middleware('permission:calendar.create')->name('calendar.create');
+    Route::get('/calendar/{event}', CalendarShow::class)->middleware('permission:calendar.view')->name('calendar.show');
+    Route::get('/calendar/{event}/edit', CalendarEdit::class)->middleware('permission:calendar.edit')->name('calendar.edit');
 
-// Invoices CRUD
-Route::get('/invoices/create', InvoicesCreate::class)->name('invoices.create');
-Route::get('/invoices/{invoice}', InvoicesShow::class)->name('invoices.show');
-Route::get('/invoices/{invoice}/edit', InvoicesEdit::class)->name('invoices.edit');
+    // Contacts CRUD
+    Route::get('/contacts/create', ContactsCreate::class)->middleware('permission:contacts.create')->name('contacts.create');
+    Route::get('/contacts/{contact}/edit', ContactsEdit::class)->middleware('permission:contacts.edit')->name('contacts.edit');
 
-// Leads CRUD
-Route::get('/leads/{lead}/edit', LeadsEdit::class)->name('leads.edit');
+    // Followups CRUD
+    Route::get('/followups/create', FollowupsCreate::class)->middleware('permission:followups.create')->name('followups.create');
+    Route::get('/followups/{followup}', FollowupsShow::class)->middleware('permission:followups.view')->name('followups.show');
+    Route::get('/followups/{followup}/edit', FollowupsEdit::class)->middleware('permission:followups.edit')->name('followups.edit');
 
-// Opportunities CRUD
-Route::get('/opportunities/create', OpportunitiesCreate::class)->name('opportunities.create');
-Route::get('/opportunities/{opportunity}/edit', OpportunitiesEdit::class)->name('opportunities.edit');
+    // Invoices CRUD
+    Route::get('/invoices/create', InvoicesCreate::class)->middleware('permission:invoices.create')->name('invoices.create');
+    Route::get('/invoices/{invoice}', InvoicesShow::class)->middleware('permission:invoices.view')->name('invoices.show');
+    Route::get('/invoices/{invoice}/edit', InvoicesEdit::class)->middleware('permission:invoices.edit')->name('invoices.edit');
 
-// Payments CRUD
-Route::get('/payments/create', PaymentsCreate::class)->name('payments.create');
-Route::get('/payments/{payment}', PaymentsShow::class)->name('payments.show');
-Route::get('/payments/{payment}/edit', PaymentsEdit::class)->name('payments.edit');
+    // Leads CRUD
+    Route::get('/leads/{lead}/edit', LeadsEdit::class)->middleware('permission:leads.edit')->name('leads.edit');
 
-// Products CRUD
-Route::get('/products/create', ProductsCreate::class)->name('products.create');
-Route::get('/products/{product}', ProductsShow::class)->name('products.show');
-Route::get('/products/{product}/edit', ProductsEdit::class)->name('products.edit');
+    // Opportunities CRUD
+    Route::get('/opportunities/create', OpportunitiesCreate::class)->middleware('permission:opportunities.create')->name('opportunities.create');
+    Route::get('/opportunities/{opportunity}/edit', OpportunitiesEdit::class)->middleware('permission:opportunities.edit')->name('opportunities.edit');
 
-// Quotations CRUD
-Route::get('/quotations/create', QuotationsCreate::class)->name('quotations.create');
-Route::get('/quotations/{quotation}', QuotationsShow::class)->name('quotations.show');
-Route::get('/quotations/{quotation}/edit', QuotationsEdit::class)->name('quotations.edit');
+    // Payments CRUD
+    Route::get('/payments/create', PaymentsCreate::class)->middleware('permission:payments.create')->name('payments.create');
+    Route::get('/payments/{payment}', PaymentsShow::class)->middleware('permission:payments.view')->name('payments.show');
+    Route::get('/payments/{payment}/edit', PaymentsEdit::class)->middleware('permission:payments.edit')->name('payments.edit');
 
-// Sales Orders CRUD
-Route::get('/sales-orders/create', SalesOrdersCreate::class)->name('sales-orders.create');
-Route::get('/sales-orders/{salesOrder}', SalesOrdersShow::class)->name('sales-orders.show');
-Route::get('/sales-orders/{salesOrder}/edit', SalesOrdersEdit::class)->name('sales-orders.edit');
+    // Products CRUD
+    Route::get('/products/create', ProductsCreate::class)->middleware('permission:products.create')->name('products.create');
+    Route::get('/products/{product}', ProductsShow::class)->middleware('permission:products.view')->name('products.show');
+    Route::get('/products/{product}/edit', ProductsEdit::class)->middleware('permission:products.edit')->name('products.edit');
 
-// Tasks CRUD
-Route::get('/tasks/create', TasksCreate::class)->name('tasks.create');
-Route::get('/tasks/{task}', TasksShow::class)->name('tasks.show');
-Route::get('/tasks/{task}/edit', TasksEdit::class)->name('tasks.edit');
+    // Quotations CRUD
+    Route::get('/quotations/create', QuotationsCreate::class)->middleware('permission:quotations.create')->name('quotations.create');
+    Route::get('/quotations/{quotation}', QuotationsShow::class)->middleware('permission:quotations.view')->name('quotations.show');
+    Route::get('/quotations/{quotation}/edit', QuotationsEdit::class)->middleware('permission:quotations.edit')->name('quotations.edit');
+
+    // Sales Orders CRUD
+    Route::get('/sales-orders/create', SalesOrdersCreate::class)->middleware('permission:sales-orders.create')->name('sales-orders.create');
+    Route::get('/sales-orders/{salesOrder}', SalesOrdersShow::class)->middleware('permission:sales-orders.view')->name('sales-orders.show');
+    Route::get('/sales-orders/{salesOrder}/edit', SalesOrdersEdit::class)->middleware('permission:sales-orders.edit')->name('sales-orders.edit');
+
+    // Tasks CRUD
+    Route::get('/tasks/create', TasksCreate::class)->middleware('permission:tasks.create')->name('tasks.create');
+    Route::get('/tasks/{task}', TasksShow::class)->middleware('permission:tasks.view')->name('tasks.show');
+    Route::get('/tasks/{task}/edit', TasksEdit::class)->middleware('permission:tasks.edit')->name('tasks.edit');
+});

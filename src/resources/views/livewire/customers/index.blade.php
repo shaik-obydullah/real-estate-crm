@@ -47,9 +47,11 @@
                     <option value="{{ $manager->id }}">{{ $manager->name }}</option>
                     @endforeach
                 </select>
-                <button class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-                    <i class="fas fa-sliders-h"></i> More Filters
+                @if (count($selected) > 0)
+                <button wire:click="confirmBulkDelete" class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                    <i class="fas fa-trash"></i> Delete Selected ({{ count($selected) }})
                 </button>
+                @endif
             </div>
         </div>
 
@@ -59,15 +61,13 @@
                 <thead class="bg-gray-50 text-left">
                     <tr>
                         <th class="px-6 py-3 w-10">
-                            <input type="checkbox" wire:model.live="selected" value="{{ $customer->id ?? '' }}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" x-on:click="$wire.toggleSelectAll()">
+                            <input type="checkbox" wire:model="selectAll" wire:change="toggleSelectAll()" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                         </th>
                         <th class="px-6 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700" wire:click="sortBy('name')">
                             <div class="flex items-center gap-1">
                                 Customer
                                 @if($sortBy === 'name')
                                 <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-blue-500"></i>
-                                @else
-                                <i class="fas fa-sort text-gray-300"></i>
                                 @endif
                             </div>
                         </th>
@@ -80,11 +80,6 @@
                         <th class="px-6 py-3 font-medium text-gray-500 hidden 2xl:table-cell cursor-pointer hover:text-gray-700" wire:click="sortBy('created_at')">
                             <div class="flex items-center gap-1">
                                 Created
-                                @if($sortBy === 'created_at')
-                                <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-blue-500"></i>
-                                @else
-                                <i class="fas fa-sort text-gray-300"></i>
-                                @endif
                             </div>
                         </th>
                         <th class="px-6 py-3 font-medium text-gray-500 text-right">Actions</th>
@@ -181,10 +176,7 @@
         </div>
 
         {{-- Pagination --}}
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-            <p class="text-sm text-gray-500">
-                Showing {{ $customers->firstItem() ?? 0 }} to {{ $customers->lastItem() ?? 0 }} of {{ $customers->total() }} customers
-            </p>
+        <div class="px-6 py-4 border-t border-gray-100">
             {{ $customers->links() }}
         </div>
     </div>
@@ -208,6 +200,31 @@
         <div class="flex items-center justify-end gap-3">
             <button wire:click="$set('deleteId', null)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
             <button x-ref="confirmBtn" wire:click="deleteCustomer" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                <i class="fas fa-trash mr-1"></i> Delete
+            </button>
+        </div>
+    </div>
+</div>
+@endif
+
+{{-- Bulk Delete Confirmation Modal --}}
+@if ($bulkDelete)
+<div class="fixed inset-0 z-50 flex items-center justify-center" x-data x-init="$nextTick(() => $refs.bulkConfirmBtn.focus())" @keydown.escape.window="$wire.$set('bulkDelete', false)">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$wire.$set('bulkDelete', false)"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 z-10 transform transition-all">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-600 text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Delete {{ count($selected) }} Customers</h3>
+                <p class="text-sm text-gray-500">This action cannot be undone.</p>
+            </div>
+        </div>
+        <p class="text-sm text-gray-600 mb-6">Are you sure you want to delete the {{ count($selected) }} selected customers? All associated data will also be removed.</p>
+        <div class="flex items-center justify-end gap-3">
+            <button wire:click="$set('bulkDelete', false)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+            <button x-ref="bulkConfirmBtn" wire:click="deleteSelected" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
                 <i class="fas fa-trash mr-1"></i> Delete
             </button>
         </div>

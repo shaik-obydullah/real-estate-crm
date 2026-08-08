@@ -5,11 +5,12 @@ namespace App\Http\Livewire\Settings;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Setting;
+use Carbon\Carbon;
 
 #[Layout('layouts.app', ['title' => 'Settings'])]
 class Index extends Component
 {
-    public string $activeTab = 'company';
+    public string $activeTab = 'general';
 
     public string $companyName = '';
     public string $companyWebsite = '';
@@ -31,9 +32,14 @@ class Index extends Component
     public string $locale = 'en';
     public string $timezone = 'UTC';
     public string $dateFormat = 'Y-m-d';
+    public string $timeFormat = 'g:i A';
 
     public string $primaryColor = '#3b82f6';
     public bool $darkMode = false;
+
+    public bool $maintenanceEnabled = false;
+    public string $maintenanceMessage = '';
+    public string $maintenanceAllowedIps = '';
 
     public function mount()
     {
@@ -57,9 +63,14 @@ class Index extends Component
         $this->locale = $this->getSetting('locale', 'en');
         $this->timezone = $this->getSetting('timezone', 'UTC');
         $this->dateFormat = $this->getSetting('date_format', 'Y-m-d');
+        $this->timeFormat = $this->getSetting('time_format', 'g:i A');
 
         $this->primaryColor = $this->getSetting('primary_color', '#3b82f6');
         $this->darkMode = $this->getSetting('dark_mode', '0') === '1';
+
+        $this->maintenanceEnabled = $this->getSetting('maintenance_enabled', '0') === '1';
+        $this->maintenanceMessage = $this->getSetting('maintenance_message', 'We are performing scheduled maintenance. Please check back soon.');
+        $this->maintenanceAllowedIps = $this->getSetting('maintenance_allowed_ips', '');
     }
 
     protected function getSetting(string $key, string $default = ''): string
@@ -70,6 +81,22 @@ class Index extends Component
     protected function saveSetting(string $key, string $value): void
     {
         Setting::updateOrCreate(['key' => $key], ['value' => $value]);
+    }
+
+    public function saveGeneral()
+    {
+        $this->validate([
+            'companyName' => 'required|string|max:255',
+            'maintenanceMessage' => 'nullable|string|max:500',
+            'maintenanceAllowedIps' => 'nullable|string|max:500',
+        ]);
+
+        $this->saveSetting('company_name', $this->companyName);
+        $this->saveSetting('maintenance_enabled', $this->maintenanceEnabled ? '1' : '0');
+        $this->saveSetting('maintenance_message', $this->maintenanceMessage);
+        $this->saveSetting('maintenance_allowed_ips', $this->maintenanceAllowedIps);
+
+        session()->flash('success', $this->maintenanceEnabled ? 'General settings saved. Maintenance mode is now ON.' : 'General settings saved.');
     }
 
     public function saveCompany()
@@ -99,9 +126,16 @@ class Index extends Component
 
     public function saveLocalization()
     {
+        $this->validate([
+            'timezone' => 'required|string|timezone',
+            'dateFormat' => 'required|string|max:32',
+            'timeFormat' => 'required|string|max:32',
+        ]);
+
         $this->saveSetting('locale', $this->locale);
         $this->saveSetting('timezone', $this->timezone);
         $this->saveSetting('date_format', $this->dateFormat);
+        $this->saveSetting('time_format', $this->timeFormat);
         session()->flash('success', 'Localization settings saved.');
     }
 
@@ -117,8 +151,31 @@ class Index extends Component
         session()->flash('info', 'Exporting ' . $type . ' data...');
     }
 
+    public function previewDateTime(): string
+    {
+        return Carbon::now($this->timezone)->format($this->dateFormat . ' ' . $this->timeFormat);
+    }
+
+    public function timezoneGroups(): array
+    {
+        $groups = [];
+
+        foreach (\DateTimeZone::listIdentifiers() as $identifier) {
+            $parts = explode('/', $identifier, 2);
+            $group = $parts[0] ?? 'Other';
+            $groups[$group][] = $identifier;
+        }
+
+        ksort($groups);
+
+        return $groups;
+    }
+
     public function render()
     {
-        return view('livewire.settings.index');
+        return view('livewire.settings.index', [
+            'timezoneGroups' => $this->timezoneGroups(),
+            'clientIp' => request()->ip(),
+        ]);
     }
 }

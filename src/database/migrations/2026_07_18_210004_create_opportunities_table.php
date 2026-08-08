@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('lead_id')->nullable()->constrained()->nullOnDelete();
             $table->decimal('value', 12, 2)->default(0);
             $table->enum('stage', [
-                'prospecting', 'qualification', 'needs_analysis', 'proposal',
-                'negotiation', 'closed_won', 'closed_lost',
-            ])->default('prospecting');
+                'new', 'qualified', 'meeting', 'proposal',
+                'negotiation', 'won', 'lost',
+            ])->default('new');
             $table->integer('probability')->default(0);
             $table->date('expected_closing_date')->nullable();
             $table->foreignId('assigned_to')->nullable()->constrained('users')->nullOnDelete();

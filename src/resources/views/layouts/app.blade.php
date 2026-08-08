@@ -28,121 +28,7 @@
 
             {{-- Navigation --}}
             <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-                {{-- Section: Core --}}
-                <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('dashboard') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-th-large w-5 text-center"></i> Dashboard
-                </a>
-                <a href="{{ route('notifications.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('notifications.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-bell w-5 text-center"></i> Notifications
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: CRM --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">CRM</p>
-                <a href="{{ route('customers.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('customers.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-users w-5 text-center"></i> Customers
-                </a>
-                <a href="{{ route('contacts.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('contacts.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-address-book w-5 text-center"></i> Contacts
-                </a>
-                <a href="{{ route('leads.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('leads.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-funnel-dollar w-5 text-center"></i> Leads
-                </a>
-                <a href="{{ route('pipeline.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('pipeline.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-filter w-5 text-center"></i> Pipeline
-                </a>
-                <a href="{{ route('opportunities.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('opportunities.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-handshake w-5 text-center"></i> Opportunities
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: Activities --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Activities</p>
-                <a href="{{ route('tasks.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tasks.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-check-square w-5 text-center"></i> Tasks
-                </a>
-                <a href="{{ route('activities.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('activities.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-clipboard-list w-5 text-center"></i> Activities
-                </a>
-                <a href="{{ route('followups.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('followups.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-phone-volume w-5 text-center"></i> Follow-ups
-                </a>
-                <a href="{{ route('calendar.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('calendar.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-calendar-alt w-5 text-center"></i> Calendar
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: Sales --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Sales</p>
-                <a href="{{ route('quotations.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('quotations.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-file-invoice-dollar w-5 text-center"></i> Quotations
-                </a>
-                <a href="{{ route('sales-orders.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('sales-orders.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-shopping-cart w-5 text-center"></i> Sales Orders
-                </a>
-                <a href="{{ route('invoices.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('invoices.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-file-invoice w-5 text-center"></i> Invoices
-                </a>
-                <a href="{{ route('payments.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('payments.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-credit-card w-5 text-center"></i> Payments
-                </a>
-                <a href="{{ route('products.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('products.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-box w-5 text-center"></i> Products
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: Communication --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Communication</p>
-                <a href="{{ route('chat.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('chat.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-comments w-5 text-center"></i> Chat
-                </a>
-                <a href="{{ route('email.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('email.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-envelope w-5 text-center"></i> Email
-                </a>
-                <a href="{{ route('notes.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('notes.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-sticky-note w-5 text-center"></i> Notes
-                </a>
-                <a href="{{ route('files.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('files.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-folder-open w-5 text-center"></i> Files
-                </a>
-                <a href="{{ route('timeline.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('timeline.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-stream w-5 text-center"></i> Timeline
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: Support --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Support</p>
-                <a href="{{ route('tickets.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tickets.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-ticket-alt w-5 text-center"></i> Tickets
-                </a>
-
-                <div class="border-t border-gray-200 my-3"></div>
-
-                {{-- Section: Admin --}}
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administration</p>
-                <a href="{{ route('users.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('users.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-user-cog w-5 text-center"></i> Users
-                </a>
-                <a href="{{ route('tags.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tags.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-tags w-5 text-center"></i> Tags
-                </a>
-                <a href="{{ route('reports.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('reports.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-chart-bar w-5 text-center"></i> Reports
-                </a>
-                <a href="{{ route('settings.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('settings.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-cog w-5 text-center"></i> Settings
-                </a>
-                <a href="{{ route('audit-logs.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('audit-logs.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-history w-5 text-center"></i> Audit Logs
-                </a>
-                <a href="{{ route('api.index') }}" wire:navigate class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('api.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-plug w-5 text-center"></i> API
-                </a>
+                @include('layouts.partials.sidebar-nav', ['mobile' => false])
             </nav>
         </aside>
 
@@ -163,109 +49,14 @@
                 </button>
             </div>
             <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-                <a href="{{ route('dashboard') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('dashboard') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-th-large w-5 text-center"></i> Dashboard
-                </a>
-                <a href="{{ route('notifications.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('notifications.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-bell w-5 text-center"></i> Notifications
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">CRM</p>
-                <a href="{{ route('customers.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('customers.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-users w-5 text-center"></i> Customers
-                </a>
-                <a href="{{ route('contacts.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('contacts.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-address-book w-5 text-center"></i> Contacts
-                </a>
-                <a href="{{ route('leads.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('leads.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-funnel-dollar w-5 text-center"></i> Leads
-                </a>
-                <a href="{{ route('pipeline.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('pipeline.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-filter w-5 text-center"></i> Pipeline
-                </a>
-                <a href="{{ route('opportunities.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('opportunities.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-handshake w-5 text-center"></i> Opportunities
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Activities</p>
-                <a href="{{ route('tasks.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tasks.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-check-square w-5 text-center"></i> Tasks
-                </a>
-                <a href="{{ route('activities.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('activities.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-clipboard-list w-5 text-center"></i> Activities
-                </a>
-                <a href="{{ route('followups.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('followups.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-phone-volume w-5 text-center"></i> Follow-ups
-                </a>
-                <a href="{{ route('calendar.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('calendar.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-calendar-alt w-5 text-center"></i> Calendar
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Sales</p>
-                <a href="{{ route('quotations.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('quotations.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-file-invoice-dollar w-5 text-center"></i> Quotations
-                </a>
-                <a href="{{ route('sales-orders.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('sales-orders.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-shopping-cart w-5 text-center"></i> Sales Orders
-                </a>
-                <a href="{{ route('invoices.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('invoices.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-file-invoice w-5 text-center"></i> Invoices
-                </a>
-                <a href="{{ route('payments.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('payments.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-credit-card w-5 text-center"></i> Payments
-                </a>
-                <a href="{{ route('products.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('products.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-box w-5 text-center"></i> Products
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Communication</p>
-                <a href="{{ route('chat.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('chat.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-comments w-5 text-center"></i> Chat
-                </a>
-                <a href="{{ route('email.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('email.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-envelope w-5 text-center"></i> Email
-                </a>
-                <a href="{{ route('notes.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('notes.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-sticky-note w-5 text-center"></i> Notes
-                </a>
-                <a href="{{ route('files.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('files.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-folder-open w-5 text-center"></i> Files
-                </a>
-                <a href="{{ route('timeline.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('timeline.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-stream w-5 text-center"></i> Timeline
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Support</p>
-                <a href="{{ route('tickets.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tickets.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-ticket-alt w-5 text-center"></i> Tickets
-                </a>
-                <div class="border-t border-gray-200 my-3"></div>
-                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administration</p>
-                <a href="{{ route('users.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('users.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-user-cog w-5 text-center"></i> Users
-                </a>
-                <a href="{{ route('tags.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('tags.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-tags w-5 text-center"></i> Tags
-                </a>
-                <a href="{{ route('reports.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('reports.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-chart-bar w-5 text-center"></i> Reports
-                </a>
-                <a href="{{ route('settings.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('settings.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-cog w-5 text-center"></i> Settings
-                </a>
-                <a href="{{ route('audit-logs.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('audit-logs.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-history w-5 text-center"></i> Audit Logs
-                </a>
-                <a href="{{ route('api.index') }}" wire:navigate @click="sidebarOpen = false" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg {{ request()->routeIs('api.*') ? 'text-white bg-blue-600' : 'text-gray-600 hover:bg-gray-100' }}">
-                    <i class="fas fa-plug w-5 text-center"></i> API
-                </a>
+                @include('layouts.partials.sidebar-nav', ['mobile' => true])
             </nav>
         </div>
 
         {{-- Main Content --}}
         <div class="flex-1 lg:pl-64 flex flex-col min-h-full">
             {{-- Mobile Header --}}
-            <header class="sticky top-0 z-20 flex items-center h-16 px-4 bg-white border-b border-gray-200 lg:hidden">
+            <header class="sticky top-0 z-20 flex items-center h-16 px-4 pt-2 bg-white border-b border-gray-200 lg:hidden">
                 <button @click="sidebarOpen = true" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-bars text-lg"></i>
                 </button>
@@ -278,7 +69,7 @@
             </header>
 
             {{-- Top Bar --}}
-            <div class="hidden lg:flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200">
+            <div class="hidden lg:flex items-center justify-between h-16 px-6 pt-2 bg-white border-b border-gray-200" style="padding: 1rem;">
                 <button @click="$dispatch('toggle-search')" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-400 bg-gray-100 rounded-lg hover:bg-gray-200 transition">
                     <i class="fas fa-search"></i>
                     <span>Search...</span>
@@ -295,7 +86,13 @@
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                             <i class="fas fa-user text-blue-600 text-sm"></i>
                         </div>
-                        <span class="text-sm font-medium text-gray-700">{{ auth()->user()->name ?? 'Admin' }}</span>
+                        <div class="hidden sm:block">
+                            <span class="text-sm font-medium text-gray-700">{{ auth()->user()->name ?? 'User' }}</span>
+                            <span class="block text-xs text-gray-400 capitalize">{{ auth()->user()->role ?? 'user' }}</span>
+                        </div>
+                        <a href="{{ route('logout') }}" title="Sign out" class="ml-2 p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -320,12 +117,16 @@
             </div>
             <div class="max-h-80 overflow-y-auto p-2">
                 <p class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase">Quick Actions</p>
+                @can('permission', 'customers.create')
                 <a href="{{ route('customers.create') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100">
                     <i class="fas fa-plus w-5 text-center text-gray-400"></i> New Customer
                 </a>
+                @endcan
+                @can('permission', 'leads.create')
                 <a href="{{ route('leads.create') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100">
                     <i class="fas fa-plus w-5 text-center text-gray-400"></i> New Lead
                 </a>
+                @endcan
                 <div x-show="query.length > 0" class="border-t border-gray-100 mt-2 pt-2">
                     <p class="px-3 py-2 text-xs font-semibold text-gray-400 uppercase">Results</p>
                     <p class="px-3 py-2 text-sm text-gray-500">Type to search...</p>

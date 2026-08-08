@@ -1,4 +1,3 @@
-
 <div class="space-y-6" x-data="{ activeTab: @entangle('activeTab') }">
     <div>
         <h1 class="text-2xl font-bold text-gray-900">Settings</h1>
@@ -11,12 +10,19 @@
         </div>
     @endif
 
+    @if (session()->has('info'))
+        <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-lg text-sm">
+            {{ session('info') }}
+        </div>
+    @endif
+
     <!-- Tabs -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-100">
         <div class="border-b border-gray-200">
             <nav class="flex overflow-x-auto -mb-px px-4">
                 @php
                     $tabs = [
+                        'general' => ['icon' => 'fa-cogs', 'label' => 'General'],
                         'company' => ['icon' => 'fa-building', 'label' => 'Company'],
                         'email' => ['icon' => 'fa-envelope', 'label' => 'Email'],
                         'localization' => ['icon' => 'fa-globe', 'label' => 'Localization'],
@@ -33,6 +39,63 @@
         </div>
 
         <div class="p-6">
+            <!-- General Tab -->
+            <div x-show="activeTab === 'general'" x-cloak>
+                <form wire:submit="saveGeneral" class="space-y-6">
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-900 mb-4">Application</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Application Name</label>
+                                <input wire:model="companyName" type="text" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                @error('companyName') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-900">Maintenance Mode</h3>
+                                <p class="text-xs text-gray-500">Temporarily disable the application for everyone except administrators and whitelisted IPs</p>
+                            </div>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-full {{ $maintenanceEnabled ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700' }}">
+                                {{ $maintenanceEnabled ? 'Maintenance ON' : 'Operational' }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-4">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">Enable Maintenance Mode</div>
+                                <div class="text-xs text-gray-500">Non-admin users will see a maintenance page</div>
+                            </div>
+                            <button type="button" wire:click="$toggle('maintenanceEnabled')" :class="$wire.maintenanceEnabled ? 'bg-yellow-500' : 'bg-gray-300'" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                                <span :class="$wire.maintenanceEnabled ? 'translate-x-6' : 'translate-x-1'" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
+                            </button>
+                        </div>
+
+                        <div x-show="$wire.maintenanceEnabled" x-cloak class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Maintenance Message</label>
+                                <textarea wire:model="maintenanceMessage" rows="2" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Allowed IP Addresses</label>
+                                <input wire:model="maintenanceAllowedIps" type="text" placeholder="127.0.0.1, 203.0.113.10" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                <p class="text-xs text-gray-500 mt-1">Comma-separated. Your current IP is <code class="text-gray-700">{{ $clientIp }}</code>. Administrators always have access.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" wire:loading.attr="disabled" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition disabled:opacity-50">
+                            <span wire:loading.remove wire:target="saveGeneral">Save General Settings</span>
+                            <span wire:loading wire:target="saveGeneral">Saving...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Company Tab -->
             <div x-show="activeTab === 'company'" x-cloak>
                 <form wire:submit="saveCompany" class="space-y-6">
@@ -154,30 +217,45 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
-                            <select wire:model="timezone" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                                <option value="UTC">UTC</option>
-                                <option value="America/New_York">Eastern Time (US)</option>
-                                <option value="America/Chicago">Central Time (US)</option>
-                                <option value="America/Denver">Mountain Time (US)</option>
-                                <option value="America/Los_Angeles">Pacific Time (US)</option>
-                                <option value="Europe/London">London</option>
-                                <option value="Europe/Paris">Paris</option>
-                                <option value="Asia/Dubai">Dubai</option>
-                                <option value="Asia/Shanghai">Shanghai</option>
-                                <option value="Asia/Tokyo">Tokyo</option>
+                            <select wire:model.live="timezone" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                @foreach($timezoneGroups as $group => $timezones)
+                                    <optgroup label="{{ $group }}">
+                                        @foreach($timezones as $tz)
+                                            <option value="{{ $tz }}">{{ $tz }}</option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Date Format</label>
-                            <select wire:model="dateFormat" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                                <option value="Y-m-d">YYYY-MM-DD</option>
-                                <option value="d/m/Y">DD/MM/YYYY</option>
-                                <option value="m/d/Y">MM/DD/YYYY</option>
-                                <option value="d-m-Y">DD-MM-YYYY</option>
-                                <option value="d.M.Y">DD Mon YYYY</option>
+                            <select wire:model.live="dateFormat" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="Y-m-d">YYYY-MM-DD (2026-08-08)</option>
+                                <option value="d/m/Y">DD/MM/YYYY (08/08/2026)</option>
+                                <option value="m/d/Y">MM/DD/YYYY (08/08/2026)</option>
+                                <option value="d-m-Y">DD-MM-YYYY (08-08-2026)</option>
+                                <option value="d M Y">DD Mon YYYY (08 Aug 2026)</option>
+                                <option value="M j, Y">Mon DD, YYYY (Aug 8, 2026)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Time Format</label>
+                            <select wire:model.live="timeFormat" class="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="g:i A">12-hour (4:05 PM)</option>
+                                <option value="H:i">24-hour (16:05)</option>
+                                <option value="g:i a">12-hour lowercase (4:05 pm)</option>
                             </select>
                         </div>
                     </div>
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex items-center justify-between">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">Preview</div>
+                            <div class="text-xs text-gray-500">How dates and times will appear</div>
+                        </div>
+                        <div class="text-sm font-mono text-blue-700">{{ $this->previewDateTime() }}</div>
+                    </div>
+
                     <div class="flex justify-end">
                         <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition">Save Localization</button>
                     </div>
@@ -199,7 +277,7 @@
                             <div class="text-sm font-medium text-gray-900">Dark Mode</div>
                             <div class="text-xs text-gray-500">Enable dark mode for the application</div>
                         </div>
-                        <button type="button" wire:click="toggle 'darkMode'" :class="$wire.darkMode ? 'bg-blue-600' : 'bg-gray-300'" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        <button type="button" wire:click="$toggle('darkMode')" :class="$wire.darkMode ? 'bg-blue-600' : 'bg-gray-300'" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                             <span :class="$wire.darkMode ? 'translate-x-6' : 'translate-x-1'" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"></span>
                         </button>
                     </div>

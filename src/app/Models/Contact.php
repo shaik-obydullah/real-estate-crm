@@ -25,6 +25,7 @@ class Contact extends Model
         'department',
         'birthday',
         'is_primary',
+        'notes',
     ];
 
     protected function casts(): array

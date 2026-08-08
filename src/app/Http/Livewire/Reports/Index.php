@@ -42,14 +42,14 @@ class Index extends Component
             'paid_invoices' => Invoice::where('status', 'paid')->count(),
             'pending_invoices' => Invoice::where('status', 'pending')->count(),
             'total_opportunities' => Opportunity::count(),
-            'won_opportunities' => Opportunity::where('stage', 'closed_won')->count(),
-            'open_opportunities' => Opportunity::whereNotIn('stage', ['closed_won', 'closed_lost'])->count(),
+            'won_opportunities' => Opportunity::where('stage', 'won')->count(),
+            'open_opportunities' => Opportunity::whereNotIn('stage', ['won', 'lost'])->count(),
             'total_tickets' => Ticket::count(),
             'open_tickets' => Ticket::where('status', 'open')->count(),
             'resolved_tickets' => Ticket::where('status', 'resolved')->count(),
             'total_users' => User::count(),
             'conversion_rate' => 0,
-            'pipeline_value' => Opportunity::whereNotIn('stage', ['closed_won', 'closed_lost'])->sum('value'),
+            'pipeline_value' => Opportunity::whereNotIn('stage', ['won', 'lost'])->sum('value'),
         ];
 
         if ($data['total_leads'] > 0) {

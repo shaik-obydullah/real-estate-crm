@@ -20,8 +20,9 @@ class Index extends Component
     public string $sortBy = 'created_at';
     public string $sortDirection = 'desc';
     public array $selected = [];
-    public ?int $deleteId = null;
     public bool $selectAll = false;
+    public bool $bulkDelete = false;
+    public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
 
@@ -57,20 +58,6 @@ class Index extends Component
         }
     }
 
-    public function toggleSelectAll(): void
-    {
-        if ($this->selectAll) {
-            $this->selected = [];
-        } else {
-            $this->selected = Customer::pluck('id')->toArray();
-        }
-    }
-
-    public function updatedSelected(): void
-    {
-        $this->selectAll = false;
-    }
-
     public function confirmDelete(int $id): void
     {
         $this->deleteId = $id;
@@ -86,14 +73,46 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->customersQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Customer::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('customerDeleted');
+            session()->flash('success', $count . ' customer(s) deleted successfully.');
+        }
+    }
+
     public function getAccountManagersProperty()
     {
         return User::where('is_active', true)->orderBy('name')->get();
     }
 
-    public function render()
+    private function customersQuery()
     {
-        $query = Customer::query()
+        return Customer::query()
             ->with(['accountManager', 'tags'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('name', 'like', '%' . $this->search . '%')
@@ -104,9 +123,12 @@ class Index extends Component
             ->when($this->typeFilter, fn($q) => $q->where('type', $this->typeFilter))
             ->when($this->accountManagerFilter, fn($q) => $q->where('account_manager_id', $this->accountManagerFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.customers.index', [
-            'customers' => $query->paginate(10),
+            'customers' => $this->customersQuery()->paginate(10),
             'totalCustomers' => Customer::count(),
         ]);
     }
