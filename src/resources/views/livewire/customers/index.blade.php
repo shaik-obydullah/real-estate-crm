@@ -180,9 +180,8 @@
             {{ $customers->links() }}
         </div>
     </div>
-</div>
 
-{{-- Delete Confirmation Modal --}}
+    {{-- Delete Confirmation Modal --}}
 @if ($deleteId)
 <div class="fixed inset-0 z-50 flex items-center justify-center" x-data x-init="$nextTick(() => $refs.confirmBtn.focus())" @keydown.escape.window="$wire.$set('deleteId', null)">
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$wire.$set('deleteId', null)"></div>
@@ -231,3 +230,5 @@
     </div>
 </div>
 @endif
+</div>
+

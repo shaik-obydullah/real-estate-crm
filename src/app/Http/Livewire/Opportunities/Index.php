@@ -20,6 +20,7 @@ class Index extends Component
     public string $sortDirection = 'desc';
     public array $selected = [];
     public bool $selectAll = false;
+    public bool $bulkDelete = false;
 
     protected string $paginationTheme = 'tailwind';
 
@@ -63,9 +64,32 @@ class Index extends Component
     public function toggleSelectAll(): void
     {
         if ($this->selectAll) {
-            $this->selected = [];
+            $this->selected = $this->opportunitiesQuery()->pluck('id')->toArray();
         } else {
-            $this->selected = Opportunity::pluck('id')->toArray();
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Opportunity::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('opportunityDeleted');
+            session()->flash('success', $count . ' opportunity(ies) deleted successfully.');
         }
     }
 
@@ -81,9 +105,9 @@ class Index extends Component
         return $this->stageConfig[$stage]['bg'] ?? 'bg-gray-100 text-gray-700';
     }
 
-    public function render()
+    private function opportunitiesQuery()
     {
-        $query = Opportunity::query()
+        return Opportunity::query()
             ->with(['contact', 'lead', 'assignedTo'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('name', 'like', '%' . $this->search . '%')
@@ -92,9 +116,12 @@ class Index extends Component
             ->when($this->stageFilter, fn($q) => $q->where('stage', $this->stageFilter))
             ->when($this->assignedFilter, fn($q) => $q->where('assigned_to', $this->assignedFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.opportunities.index', [
-            'opportunities' => $query->paginate(10),
+            'opportunities' => $this->opportunitiesQuery()->paginate(10),
             'totalOpportunities' => Opportunity::count(),
             'users' => User::where('is_active', true)->orderBy('name')->get(),
         ]);

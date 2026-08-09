@@ -19,10 +19,13 @@ class Index extends Component
     public string $sortBy = 'due_date';
     public string $sortDirection = 'asc';
     public ?int $deleteId = null;
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
 
     protected string $paginationTheme = 'tailwind';
 
-    protected $listeners = ['' => '$refresh'];
+    protected $listeners = ['followupDeleted' => '$refresh'];
 
     public function updatingSearch(): void
     {
@@ -69,6 +72,38 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->followupsQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Followup::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('followupDeleted');
+            session()->flash('success', $count . ' follow-up(s) deleted successfully.');
+        }
+    }
+
     public function getStatusColor(string $status): string
     {
         return match($status) {
@@ -109,17 +144,20 @@ class Index extends Component
             && $followup->status === 'pending';
     }
 
-    public function render()
+    private function followupsQuery()
     {
-        $query = Followup::query()->with(['customer', 'lead', 'assignedTo'])
+        return Followup::query()->with(['customer', 'lead', 'assignedTo'])
             ->when($this->search, fn($q) => $q->where('title', 'like', '%' . $this->search . '%'))
             ->when($this->typeFilter, fn($q) => $q->where('type', $this->typeFilter))
             ->when($this->priorityFilter, fn($q) => $q->where('priority', $this->priorityFilter))
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.followups.index', [
-            'followups' => $query->paginate(15),
+            'followups' => $this->followupsQuery()->paginate(15),
             'totalFollowups' => Followup::count(),
         ]);
     }

@@ -22,6 +22,9 @@ class Index extends Component
     public ?int $customerId = null;
     public bool $isPinned = false;
     public ?int $deleteId = null;
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
 
     protected string $paginationTheme = 'tailwind';
 
@@ -105,6 +108,38 @@ class Index extends Component
         $this->deleteId = $id;
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->notesQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Note::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('noteSaved');
+            session()->flash('success', $count . ' note(s) deleted successfully.');
+        }
+    }
+
     public function deleteNote(): void
     {
         if ($this->deleteId) {
@@ -127,9 +162,9 @@ class Index extends Component
         return Customer::orderBy('name')->get();
     }
 
-    public function render()
+    private function notesQuery()
     {
-        $query = Note::query()->with(['customer', 'creator'])
+        return Note::query()->with(['customer', 'creator'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('title', 'like', '%' . $this->search . '%')
                     ->orWhere('content', 'like', '%' . $this->search . '%');
@@ -137,9 +172,12 @@ class Index extends Component
             ->when($this->customerFilter, fn($q) => $q->where('customer_id', $this->customerFilter))
             ->orderBy('is_pinned', 'desc')
             ->latest();
+    }
 
+    public function render()
+    {
         return view('livewire.notes.index', [
-            'notes' => $query->paginate(12),
+            'notes' => $this->notesQuery()->paginate(12),
         ]);
     }
 }

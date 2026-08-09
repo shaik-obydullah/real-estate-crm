@@ -19,6 +19,9 @@ class Index extends Component
     public string $typeFilter = '';
     public string $viewMode = 'grid';
     public ?int $deleteId = null;
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public $uploadFile;
     public ?int $uploadCustomerId = null;
     public bool $showUpload = false;
@@ -84,6 +87,43 @@ class Index extends Component
         $this->deleteId = $id;
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->filesQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            File::whereIn('id', $this->selected)->get()->each(function ($file) {
+                if ($file->path && \Storage::disk('public')->exists($file->path)) {
+                    \Storage::disk('public')->delete($file->path);
+                }
+                $file->delete();
+            });
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('fileUploaded');
+            session()->flash('success', $count . ' file(s) deleted successfully.');
+        }
+    }
+
     public function deleteFile(): void
     {
         if ($this->deleteId) {
@@ -124,9 +164,9 @@ class Index extends Component
         return Customer::orderBy('name')->get();
     }
 
-    public function render()
+    private function filesQuery()
     {
-        $query = File::query()->with(['customer', 'uploader'])
+        return File::query()->with(['customer', 'uploader'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('original_name', 'like', '%' . $this->search . '%')
                     ->orWhere('mime_type', 'like', '%' . $this->search . '%');
@@ -142,9 +182,12 @@ class Index extends Component
                 };
             })
             ->latest();
+    }
 
+    public function render()
+    {
         return view('livewire.files.index', [
-            'files' => $query->paginate(12),
+            'files' => $this->filesQuery()->paginate(12),
         ]);
     }
 }

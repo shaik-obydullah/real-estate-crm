@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('followups', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['call', 'meeting', 'email', 'other']);
+            $table->enum('type', ['call', 'meeting', 'email', 'other', 'follow_up', 'reminder']);
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('due_date');

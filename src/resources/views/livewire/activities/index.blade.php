@@ -40,6 +40,11 @@
                     <label class="text-sm text-gray-500">To</label>
                     <input wire:model.live="dateTo" type="date" class="px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
                 </div>
+                @if (count($selected) > 0)
+                <button wire:click="confirmBulkDelete" class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                    <i class="fas fa-trash"></i> Delete Selected ({{ count($selected) }})
+                </button>
+                @endif
             </div>
         </div>
 
@@ -47,6 +52,9 @@
             <table class="w-full text-sm">
                 <thead class="bg-gray-50 text-left">
                     <tr>
+                        <th class="px-6 py-3 w-10">
+                            <input type="checkbox" wire:model="selectAll" wire:change="toggleSelectAll()" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        </th>
                         <th class="px-6 py-3 font-medium text-gray-500">Type</th>
                         <th class="px-6 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700" wire:click="sortBy('title')">
                             <div class="flex items-center gap-1">Title @if($sortBy === 'title')<i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }} text-blue-500"></i>@else<i class="fas fa-sort text-gray-300"></i>@endif</div>
@@ -64,6 +72,9 @@
                 <tbody class="divide-y divide-gray-50">
                     @forelse($activities as $activity)
                     <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4">
+                            <input type="checkbox" wire:model.live="selected" value="{{ $activity->id }}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                        </td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium {{ $this->getTypeColor($activity->type) }}">
                                 <i class="{{ $this->getTypeIcon($activity->type) }} text-[10px]"></i>
@@ -104,7 +115,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="px-6 py-12 text-center">
+                        <td colspan="9" class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center gap-3">
                                 <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
                                     <i class="fas fa-calendar-check text-gray-400 text-xl"></i>
@@ -141,6 +152,27 @@
                 <div class="flex justify-end gap-3">
                     <button @click="$wire.set('deleteId', null)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
                     <button wire:click="deleteActivity" x-ref="confirmBtn" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if($bulkDelete)
+    <div class="fixed inset-0 z-50 overflow-y-auto" x-data x-init="$nextTick(() => $refs.bulkConfirmBtn.focus())" @keydown.escape.window="$wire.set('bulkDelete', false)">
+        <div class="fixed inset-0 bg-black/50 transition-opacity" @click="$wire.set('bulkDelete', false)"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Delete {{ count($selected) }} Activities</h3>
+                </div>
+                <p class="text-sm text-gray-500">Are you sure you want to delete the {{ count($selected) }} selected activities? This action cannot be undone.</p>
+                <div class="flex justify-end gap-3">
+                    <button @click="$wire.set('bulkDelete', false)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+                    <button wire:click="deleteSelected" x-ref="bulkConfirmBtn" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition">Delete</button>
                 </div>
             </div>
         </div>

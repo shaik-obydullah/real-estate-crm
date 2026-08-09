@@ -17,11 +17,14 @@ class Index extends Component
     public string $statusFilter = '';
     public string $sortBy = 'payment_date';
     public string $sortDirection = 'desc';
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
 
-    protected $listeners = ['' => '$refresh'];
+    protected $listeners = ['paymentDeleted' => '$refresh'];
 
     public function updatingSearch(): void
     {
@@ -63,6 +66,38 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->paymentsQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Payment::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('paymentDeleted');
+            session()->flash('success', $count . ' payment(s) deleted successfully.');
+        }
+    }
+
     public function getStatusColor(string $status): string
     {
         return match($status) {
@@ -100,9 +135,9 @@ class Index extends Component
         };
     }
 
-    public function render()
+    private function paymentsQuery()
     {
-        $query = Payment::query()->with(['customer', 'invoice'])
+        return Payment::query()->with(['customer', 'invoice'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('payment_number', 'like', '%' . $this->search . '%')
                     ->orWhereHas('customer', fn($c) => $c->where('name', 'like', '%' . $this->search . '%'));
@@ -110,9 +145,12 @@ class Index extends Component
             ->when($this->methodFilter, fn($q) => $q->where('method', $this->methodFilter))
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.payments.index', [
-            'payments' => $query->paginate(15),
+            'payments' => $this->paymentsQuery()->paginate(15),
             'totalPayments' => Payment::count(),
         ]);
     }

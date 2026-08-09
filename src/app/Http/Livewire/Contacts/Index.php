@@ -20,6 +20,7 @@ class Index extends Component
     public string $sortDirection = 'desc';
     public array $selected = [];
     public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
@@ -54,10 +55,15 @@ class Index extends Component
     public function toggleSelectAll(): void
     {
         if ($this->selectAll) {
-            $this->selected = [];
+            $this->selected = $this->contactsQuery()->pluck('id')->toArray();
         } else {
-            $this->selected = Contact::pluck('id')->toArray();
+            $this->selected = [];
         }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
     }
 
     public function confirmDelete(int $id): void
@@ -72,6 +78,24 @@ class Index extends Component
             $this->deleteId = null;
             $this->dispatch('contactDeleted');
             session()->flash('success', 'Contact deleted successfully.');
+        }
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Contact::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('contactDeleted');
+            session()->flash('success', $count . ' contact(s) deleted successfully.');
         }
     }
 
@@ -90,9 +114,9 @@ class Index extends Component
         return $colors;
     }
 
-    public function render()
+    private function contactsQuery()
     {
-        $query = Contact::query()
+        return Contact::query()
             ->with(['customer'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('first_name', 'like', '%' . $this->search . '%')
@@ -103,9 +127,12 @@ class Index extends Component
             ->when($this->companyFilter, fn($q) => $q->where('customer_id', $this->companyFilter))
             ->when($this->departmentFilter, fn($q) => $q->where('department', $this->departmentFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.contacts.index', [
-            'contacts' => $query->paginate(10),
+            'contacts' => $this->contactsQuery()->paginate(10),
             'totalContacts' => Contact::count(),
             'companies' => Customer::orderBy('name')->get(),
             'departments' => Contact::whereNotNull('department')->distinct()->pluck('department'),

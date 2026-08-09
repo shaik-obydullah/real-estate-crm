@@ -23,6 +23,7 @@ class Index extends Component
     public string $sortDirection = 'desc';
     public array $selected = [];
     public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
@@ -54,7 +55,7 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function sortBy(string $field): void
+    public function sortLeadsBy(string $field): void
     {
         if ($this->sortBy === $field) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
@@ -67,9 +68,32 @@ class Index extends Component
     public function toggleSelectAll(): void
     {
         if ($this->selectAll) {
-            $this->selected = [];
+            $this->selected = $this->leadsQuery()->pluck('id')->toArray();
         } else {
-            $this->selected = Lead::pluck('id')->toArray();
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Lead::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('leadDeleted');
+            session()->flash('success', $count . ' lead(s) deleted successfully.');
         }
     }
 
@@ -103,9 +127,9 @@ class Index extends Component
         return Lead::whereNotIn('status', ['lost'])->sum('value');
     }
 
-    public function render()
+    private function leadsQuery()
     {
-        $query = Lead::query()
+        return Lead::query()
             ->with(['assignedTo', 'tags'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('title', 'like', '%' . $this->search . '%')
@@ -117,9 +141,12 @@ class Index extends Component
             ->when($this->sourceFilter, fn($q) => $q->where('source', $this->sourceFilter))
             ->when($this->salesPersonFilter, fn($q) => $q->where('assigned_to', $this->salesPersonFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.leads.index', [
-            'leads' => $query->paginate(10),
+            'leads' => $this->leadsQuery()->paginate(10),
             'totalLeads' => Lead::count(),
         ]);
     }

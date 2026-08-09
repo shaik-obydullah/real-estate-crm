@@ -18,6 +18,9 @@ class Index extends Component
     public string $dateTo = '';
     public string $sortBy = 'created_at';
     public string $sortDirection = 'desc';
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
@@ -69,6 +72,38 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->quotationsQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Quotation::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('quotationDeleted');
+            session()->flash('success', $count . ' quotation(s) deleted successfully.');
+        }
+    }
+
     public function getStatusColor(string $status): string
     {
         return match($status) {
@@ -81,9 +116,9 @@ class Index extends Component
         };
     }
 
-    public function render()
+    private function quotationsQuery()
     {
-        $query = Quotation::query()->with(['customer'])
+        return Quotation::query()->with(['customer'])
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('quote_number', 'like', '%' . $this->search . '%')
                     ->orWhereHas('customer', fn($c) => $c->where('name', 'like', '%' . $this->search . '%'));
@@ -92,9 +127,12 @@ class Index extends Component
             ->when($this->dateFrom, fn($q) => $q->where('created_at', '>=', $this->dateFrom))
             ->when($this->dateTo, fn($q) => $q->where('created_at', '<=', $this->dateTo . ' 23:59:59'))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.quotations.index', [
-            'quotations' => $query->paginate(15),
+            'quotations' => $this->quotationsQuery()->paginate(15),
             'totalQuotations' => Quotation::count(),
         ]);
     }

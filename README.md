@@ -18,7 +18,7 @@ A full-featured, AI-ready Customer Relationship Management system built for real
 | Layer | Technology |
 |-------|-----------|
 | **Backend** | Laravel 13.8, PHP 8.3+, Livewire 4.3 |
-| **Frontend** | Livewire, Tailwind CSS v4, Alpine.js 3.15 |
+| **Frontend** | Livewire, Tailwind CSS v4, Alpine.js 3.15 (bundled with Livewire) |
 | **Database** | MySQL 8.0 (Docker) / SQLite (local) |
 | **Build** | Vite 8 with laravel-vite-plugin |
 | **Auth** | Laravel Sanctum 4.3 (session-based) |
@@ -68,12 +68,12 @@ real-estate-crm/
 ├── templates/                  # Static HTML prototypes (~35 pages)
 └── src/                        # Laravel application
     ├── app/
-    │   ├── Http/Livewire/      # 60+ Livewire components (29 modules)
-    │   ├── Models/             # 26 Eloquent models
+    │   ├── Http/Livewire/      # 66 Livewire components (30 modules)
+    │   ├── Models/             # 27 Eloquent models
     │   └── Providers/
     ├── database/
-    │   ├── migrations/         # 30 migration files
-    │   └── seeders/            # 17 seeder files
+    │   ├── migrations/         # 33 migration files
+    │   └── seeders/            # 21 seeder files
     ├── resources/
     │   ├── views/livewire/     # Blade views per module
     │   └── views/layouts/      # Master layout (app.blade.php)
@@ -120,7 +120,7 @@ real-estate-crm/
 
 ## Database
 
-26 Eloquent models backed by 30 migration tables. Key patterns:
+27 Eloquent models backed by 33 migration tables. Key patterns:
 - **Soft deletes** on core entities (Customer, Lead, Opportunity, Task, etc.)
 - **Polymorphic tagging** via `taggables` pivot table
 - **Decimal(12,2)** for all monetary values
@@ -144,6 +144,12 @@ Default users: Admin (`admin@example.com` / `password`), plus 4 role-based users
 - `Show` — Detail view (for entities with complex data)
 
 Navigation uses `wire:navigate` for SPA-like transitions between pages.
+
+Two conventions keep Livewire's client-side updates working:
+
+- **Single Alpine instance** — `resources/js/app.js` is an empty Vite entry; Alpine.js is provided and auto-started by Livewire's bundle. Never import Alpine there.
+- **Reactive markup inside the component root** — modals/overlays (`@if($deleteId)` etc.) must live inside the root `x-data` element; Livewire's DOM morph only patches the root's first child, so sibling nodes never update.
+- **No method/property name collisions** — a public method must not share a name with a public property (e.g. `$sortBy` vs `sortBy()`), or `$wire` resolves the property instead of the method.
 
 ## Running Tests
 

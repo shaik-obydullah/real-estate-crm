@@ -41,6 +41,11 @@
                     <option value="{{ $dept }}">{{ $dept }}</option>
                     @endforeach
                 </select>
+                @if (count($selected) > 0)
+                <button wire:click="confirmBulkDelete" class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                    <i class="fas fa-trash"></i> Delete Selected ({{ count($selected) }})
+                </button>
+                @endif
             </div>
         </div>
 
@@ -50,7 +55,7 @@
                 <thead class="bg-gray-50 text-left">
                     <tr>
                         <th class="px-6 py-3 w-10">
-                            <input type="checkbox" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" x-on:click="$wire.toggleSelectAll()">
+                            <input type="checkbox" wire:model="selectAll" wire:change="toggleSelectAll()" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                         </th>
                         <th class="px-6 py-3 font-medium text-gray-500 cursor-pointer hover:text-gray-700" wire:click="sortBy('first_name')">
                             <div class="flex items-center gap-1">
@@ -174,16 +179,12 @@
             </table>
         </div>
 
-        <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-            <p class="text-sm text-gray-500">
-                Showing {{ $contacts->firstItem() ?? 0 }} to {{ $contacts->lastItem() ?? 0 }} of {{ $contacts->total() }} contacts
-            </p>
+        <div class="px-6 py-4 border-t border-gray-100">
             {{ $contacts->links() }}
         </div>
     </div>
-</div>
 
-@if ($deleteId)
+    @if ($deleteId)
 <div class="fixed inset-0 z-50 flex items-center justify-center" x-data x-init="$nextTick(() => $refs.confirmBtn.focus())" @keydown.escape.window="$wire.$set('deleteId', null)">
     <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$wire.$set('deleteId', null)"></div>
     <div class="relative bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 z-10">
@@ -205,3 +206,29 @@
     </div>
 </div>
 @endif
+
+{{-- Bulk Delete Confirmation Modal --}}
+@if ($bulkDelete)
+<div class="fixed inset-0 z-50 flex items-center justify-center" x-data x-init="$nextTick(() => $refs.bulkConfirmBtn.focus())" @keydown.escape.window="$wire.$set('bulkDelete', false)">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$wire.$set('bulkDelete', false)"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 z-10">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Delete {{ count($selected) }} Contacts</h3>
+                <p class="text-sm text-gray-500">This action cannot be undone.</p>
+            </div>
+        </div>
+        <div class="flex items-center justify-end gap-3 mt-6">
+            <button wire:click="$set('bulkDelete', false)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+            <button x-ref="bulkConfirmBtn" wire:click="deleteSelected" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                <i class="fas fa-trash mr-1"></i> Delete
+            </button>
+        </div>
+    </div>
+</div>
+@endif
+</div>
+

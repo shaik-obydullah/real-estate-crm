@@ -17,11 +17,14 @@ class Index extends Component
     public string $statusFilter = '';
     public string $sortBy = 'name';
     public string $sortDirection = 'asc';
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
     public ?int $deleteId = null;
 
     protected string $paginationTheme = 'tailwind';
 
-    protected $listeners = ['' => '$refresh'];
+    protected $listeners = ['productDeleted' => '$refresh'];
 
     public function updatingSearch(): void
     {
@@ -63,6 +66,38 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->productsQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Product::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('productDeleted');
+            session()->flash('success', $count . ' product(s) deleted successfully.');
+        }
+    }
+
     public function getStatusColor(string $status): string
     {
         return match($status) {
@@ -85,9 +120,9 @@ class Index extends Component
         return Product::distinct()->whereNotNull('category')->pluck('category')->sort()->values();
     }
 
-    public function render()
+    private function productsQuery()
     {
-        $query = Product::query()
+        return Product::query()
             ->when($this->search, fn($q) => $q->where(function ($sub) {
                 $sub->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('sku', 'like', '%' . $this->search . '%');
@@ -95,9 +130,12 @@ class Index extends Component
             ->when($this->categoryFilter, fn($q) => $q->where('category', $this->categoryFilter))
             ->when($this->statusFilter, fn($q) => $q->where('status', $this->statusFilter))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.products.index', [
-            'products' => $query->paginate(15),
+            'products' => $this->productsQuery()->paginate(15),
             'totalProducts' => Product::count(),
             'categories' => $this->getCategories(),
         ]);

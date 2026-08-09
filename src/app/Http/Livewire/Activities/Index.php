@@ -19,10 +19,13 @@ class Index extends Component
     public string $sortBy = 'date';
     public string $sortDirection = 'desc';
     public ?int $deleteId = null;
+    public array $selected = [];
+    public bool $selectAll = false;
+    public bool $bulkDelete = false;
 
     protected string $paginationTheme = 'tailwind';
 
-    protected $listeners = ['' => '$refresh'];
+    protected $listeners = ['activityDeleted' => '$refresh'];
 
     public function updatingSearch(): void
     {
@@ -69,6 +72,38 @@ class Index extends Component
         }
     }
 
+    public function toggleSelectAll(): void
+    {
+        if ($this->selectAll) {
+            $this->selected = $this->activitiesQuery()->pluck('id')->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function updatedSelected(): void
+    {
+        $this->selectAll = false;
+    }
+
+    public function confirmBulkDelete(): void
+    {
+        $this->bulkDelete = true;
+    }
+
+    public function deleteSelected(): void
+    {
+        $count = count($this->selected);
+        if ($count > 0) {
+            Activity::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            $this->bulkDelete = false;
+            $this->dispatch('activityDeleted');
+            session()->flash('success', $count . ' activity(ies) deleted successfully.');
+        }
+    }
+
     public function getTypeIcon(string $type): string
     {
         return match($type) {
@@ -105,17 +140,20 @@ class Index extends Component
         };
     }
 
-    public function render()
+    private function activitiesQuery()
     {
-        $query = Activity::query()->with(['customer', 'lead', 'assignedTo', 'contact'])
+        return Activity::query()->with(['customer', 'lead', 'assignedTo', 'contact'])
             ->when($this->search, fn($q) => $q->where('title', 'like', '%' . $this->search . '%'))
             ->when($this->typeFilter, fn($q) => $q->where('type', $this->typeFilter))
             ->when($this->dateFrom, fn($q) => $q->where('date', '>=', $this->dateFrom))
             ->when($this->dateTo, fn($q) => $q->where('date', '<=', $this->dateTo))
             ->orderBy($this->sortBy, $this->sortDirection);
+    }
 
+    public function render()
+    {
         return view('livewire.activities.index', [
-            'activities' => $query->paginate(15),
+            'activities' => $this->activitiesQuery()->paginate(15),
             'totalActivities' => Activity::count(),
         ]);
     }

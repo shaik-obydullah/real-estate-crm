@@ -8,9 +8,16 @@
             <h1 class="text-2xl font-bold text-gray-900">Notes</h1>
             <p class="text-sm text-gray-500">Manage your notes and memos</p>
         </div>
-        <button wire:click="openEditor" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition shadow-sm">
-            <i class="fas fa-plus"></i> New Note
-        </button>
+        <div class="flex items-center gap-3">
+            @if (count($selected) > 0)
+            <button wire:click="confirmBulkDelete" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                <i class="fas fa-trash"></i> Delete Selected ({{ count($selected) }})
+            </button>
+            @endif
+            <button wire:click="openEditor" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition shadow-sm">
+                <i class="fas fa-plus"></i> New Note
+            </button>
+        </div>
     </div>
 
     @if(session('success'))
@@ -66,7 +73,11 @@
     </div>
 
     {{-- Search & Filter --}}
-    <div class="flex flex-col sm:flex-row gap-3">
+    <div class="flex flex-col sm:flex-row gap-3 items-center">
+        <label class="inline-flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input type="checkbox" wire:model="selectAll" wire:change="toggleSelectAll()" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+            Select All
+        </label>
         <div class="flex-1 relative">
             <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
             <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search notes..." class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-white">
@@ -88,8 +99,11 @@
                 <i class="fas fa-thumbtack text-yellow-500 text-xs" title="Pinned"></i>
             </div>
             @endif
+            <div class="absolute top-3 left-3">
+                <input type="checkbox" wire:model.live="selected" value="{{ $note->id }}" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+            </div>
             <div class="mb-3">
-                <h3 class="text-sm font-bold text-gray-900 pr-6">{{ $note->title }}</h3>
+                <h3 class="text-sm font-bold text-gray-900 pr-6 pl-6">{{ $note->title }}</h3>
             </div>
             <p class="text-sm text-gray-600 leading-relaxed mb-4 line-clamp-3">{{ Str::limit($note->content, 150) }}</p>
             <div class="flex items-center justify-between pt-3 border-t border-gray-100">
@@ -129,10 +143,7 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="flex items-center justify-between">
-        <p class="text-sm text-gray-500">
-            Showing {{ $notes->firstItem() ?? 0 }} to {{ $notes->lastItem() ?? 0 }} of {{ $notes->total() }} notes
-        </p>
+    <div class="px-6 py-4 border-t border-gray-100">
         {{ $notes->links() }}
     </div>
 </div>
@@ -155,6 +166,31 @@
         <div class="flex items-center justify-end gap-3">
             <button wire:click="$set('deleteId', null)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
             <button x-ref="confirmBtn" wire:click="deleteNote" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
+                <i class="fas fa-trash mr-1"></i> Delete
+            </button>
+        </div>
+    </div>
+</div>
+@endif
+
+{{-- Bulk Delete Confirmation Modal --}}
+@if($bulkDelete)
+<div class="fixed inset-0 z-50 flex items-center justify-center" x-data x-init="$nextTick(() => $refs.bulkConfirmBtn.focus())" @keydown.escape.window="$wire.$set('bulkDelete', false)">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm" @click="$wire.$set('bulkDelete', false)"></div>
+    <div class="relative bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 z-10">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-600 text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">Delete {{ count($selected) }} Notes</h3>
+                <p class="text-sm text-gray-500">This action cannot be undone.</p>
+            </div>
+        </div>
+        <p class="text-sm text-gray-600 mb-6">Are you sure you want to delete the {{ count($selected) }} selected notes?</p>
+        <div class="flex items-center justify-end gap-3">
+            <button wire:click="$set('bulkDelete', false)" class="px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+            <button x-ref="bulkConfirmBtn" wire:click="deleteSelected" class="px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition shadow-sm">
                 <i class="fas fa-trash mr-1"></i> Delete
             </button>
         </div>
