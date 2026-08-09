@@ -93,24 +93,18 @@
         @endforeach
     </div>
 
-    <!-- Chart Placeholders -->
+    <!-- Charts -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Revenue Over Time</h3>
-            <div id="revenueChart" class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div class="text-center">
-                    <i class="fas fa-chart-area text-3xl text-gray-300 mb-2"></i>
-                    <p class="text-sm text-gray-400">Chart.js visualization</p>
-                </div>
+            <div class="h-64 bg-gray-50 rounded-lg relative">
+                <canvas id="revenueChart" data-chart-labels='{{ json_encode($data['revenue_chart_labels']) }}' data-chart-values='{{ json_encode($data['revenue_chart_values']) }}'></canvas>
             </div>
         </div>
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-sm font-semibold text-gray-900 mb-4">Lead Sources</h3>
-            <div id="leadSourcesChart" class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                <div class="text-center">
-                    <i class="fas fa-chart-pie text-3xl text-gray-300 mb-2"></i>
-                    <p class="text-sm text-gray-400">Chart.js visualization</p>
-                </div>
+            <div class="h-64 bg-gray-50 rounded-lg relative">
+                <canvas id="leadSourcesChart" data-chart-labels='{{ json_encode($data['lead_sources_chart_labels']) }}' data-chart-values='{{ json_encode($data['lead_sources_chart_values']) }}'></canvas>
             </div>
         </div>
     </div>
@@ -118,4 +112,126 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    window.renderReportCharts = window.renderReportCharts || (function () {
+        let revenueChart = null;
+        let leadSourcesChart = null;
+
+        return function () {
+            if (typeof Chart === 'undefined') {
+                return;
+            }
+
+            const revenueEl = document.getElementById('revenueChart');
+            const leadEl = document.getElementById('leadSourcesChart');
+
+            if (revenueChart) revenueChart.destroy();
+            if (leadSourcesChart) leadSourcesChart.destroy();
+            revenueChart = null;
+            leadSourcesChart = null;
+
+            const readChartData = (el) => ({
+                labels: el && el.dataset.chartLabels ? JSON.parse(el.dataset.chartLabels) : [],
+                values: el && el.dataset.chartValues ? JSON.parse(el.dataset.chartValues) : [],
+            });
+
+            const revenue = readChartData(revenueEl);
+            const leadSources = readChartData(leadEl);
+
+            if (revenueEl) {
+                revenueChart = new Chart(revenueEl, {
+                    type: 'line',
+                    data: {
+                        labels: revenue.labels,
+                        datasets: [{
+                            label: 'Revenue',
+                            data: revenue.values,
+                            borderColor: 'rgb(37, 99, 235)',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            pointBackgroundColor: 'rgb(37, 99, 235)',
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: (value) => '$' + Number(value).toLocaleString(),
+                                },
+                            },
+                        },
+                    },
+                });
+            }
+
+            if (leadEl) {
+                leadSourcesChart = new Chart(leadEl, {
+                    type: 'doughnut',
+                    data: {
+                        labels: leadSources.labels,
+                        datasets: [{
+                            data: leadSources.values,
+                            backgroundColor: [
+                                'rgba(37, 99, 235, 0.8)',
+                                'rgba(16, 185, 129, 0.8)',
+                                'rgba(139, 92, 246, 0.8)',
+                                'rgba(245, 158, 11, 0.8)',
+                                'rgba(236, 72, 153, 0.8)',
+                                'rgba(20, 184, 166, 0.8)',
+                            ],
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 12,
+                                    padding: 12,
+                                },
+                            },
+                        },
+                    },
+                });
+            }
+        };
+    })();
+
+    if (!window.__reportChartsHooksRegistered) {
+        window.__reportChartsHooksRegistered = true;
+
+        document.addEventListener('livewire:init', () => {
+            window.renderReportCharts();
+
+            Livewire.hook('morph.added', ({ el }) => {
+                if (el.id === 'revenueChart' || el.id === 'leadSourcesChart') {
+                    window.renderReportCharts();
+                }
+            });
+
+            Livewire.hook('morph.updated', ({ el }) => {
+                if (el.id === 'revenueChart' || el.id === 'leadSourcesChart') {
+                    window.renderReportCharts();
+                }
+            });
+
+            Livewire.hook('commit', ({ succeed }) => {
+                succeed(() => window.renderReportCharts());
+            });
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            window.renderReportCharts();
+        });
+    }
+</script>
 @endpush

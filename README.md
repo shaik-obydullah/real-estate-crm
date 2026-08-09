@@ -58,6 +58,41 @@ composer dev      # Starts all dev services concurrently
 
 The `composer dev` script runs server, queue worker, log viewer, and Vite simultaneously.
 
+## Screenshots
+
+| | |
+|---|---|
+| **CRM Dashboard** | **Login** |
+| ![CRM Dashboard](screenshots/CRM-Dashboard.png) | ![Login](screenshots/Login.png) |
+| **Customers** | **Contacts** |
+| ![Customers](screenshots/Customers.png) | ![Contacts](screenshots/Contacts.png) |
+| **Leads** | **Sales Pipeline** |
+| ![Leads](screenshots/Leads.png) | ![Sales Pipeline](screenshots/Sales-Pipeline.png) |
+| **Opportunities** | **Quotations** |
+| ![Opportunities](screenshots/Opportunities.png) | ![Quotations](screenshots/Quotations.png) |
+| **New Quotation** | **Sales Orders** |
+| ![New Quotation](screenshots/New%20Quotation.png) | ![Sales Orders](screenshots/Sales-Orders.png) |
+| **Invoices** | **Payments** |
+| ![Invoices](screenshots/Invoices.png) | ![Payments](screenshots/Payments.png) |
+| **Products** | **Tasks** |
+| ![Products](screenshots/Products.png) | ![Tasks](screenshots/Tasks.png) |
+| **Activities** | **Follow-ups** |
+| ![Activities](screenshots/Activities.png) | ![Follow-ups](screenshots/Follow-ups.png) |
+| **Calendar** | **Chat** |
+| ![Calendar](screenshots/Calendar.png) | ![Chat](screenshots/Chat.png) |
+| **Email** | **Notifications** |
+| ![Email](screenshots/Email.png) | ![Notifications](screenshots/Notifications.png) |
+| **Notes** | **Files** |
+| ![Notes](screenshots/Notes.png) | ![Files](screenshots/Files.png) |
+| **Tickets** | **Timeline** |
+| ![Tickets](screenshots/Tickets.png) | ![Timeline](screenshots/Timeline.png) |
+| **Users** | **Role & Permissions** |
+| ![Users](screenshots/Users.png) | ![Role & Permissions](screenshots/Role-Permissions.png) |
+| **Reports** | **Audit Logs** |
+| ![Reports](screenshots/Reports.png) | ![Audit Logs](screenshots/Audit-Logs.png) |
+| **API Keys** | **Settings** |
+| ![API Keys](screenshots/API-Keys.png) | ![Settings](screenshots/Settings.png) |
+
 ## Project Structure
 
 ```

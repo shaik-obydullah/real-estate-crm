@@ -56,7 +56,31 @@ class Index extends Component
             'total_users' => User::count(),
             'conversion_rate' => 0,
             'pipeline_value' => Opportunity::whereNotIn('stage', ['won', 'lost'])->sum('value'),
+            'revenue_chart_labels' => [],
+            'revenue_chart_values' => [],
+            'lead_sources_chart_labels' => [],
+            'lead_sources_chart_values' => [],
         ];
+
+        $monthly = Payment::where('status', 'completed')
+            ->whereBetween('payment_date', [$from, $to])
+            ->get(['payment_date', 'amount'])
+            ->groupBy(fn ($payment) => $payment->payment_date->format('Y-m'))
+            ->map(fn ($group) => $group->sum(fn ($payment) => (float) $payment->amount))
+            ->sortKeys();
+
+        $data['revenue_chart_labels'] = $monthly->keys()
+            ->map(fn ($month) => Carbon::parse($month . '-01')->format('M Y'))
+            ->values()
+            ->toArray();
+        $data['revenue_chart_values'] = $monthly->values()->toArray();
+
+        $leadSources = Lead::query()
+            ->get(['source'])
+            ->groupBy(fn ($lead) => $lead->source ?: 'Unknown');
+
+        $data['lead_sources_chart_labels'] = $leadSources->keys()->toArray();
+        $data['lead_sources_chart_values'] = $leadSources->map->count()->values()->toArray();
 
         if ($data['total_leads'] > 0) {
             $data['conversion_rate'] = round(($data['converted_leads'] / max($data['leads_in_period'], 1)) * 100, 1);
