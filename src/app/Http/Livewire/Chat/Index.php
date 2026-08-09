@@ -69,6 +69,19 @@ class Index extends Component
             ->get();
     }
 
+    public function refreshChat(): void
+    {
+        $this->loadContacts();
+        $this->loadMessages();
+
+        if ($this->selectedContactId) {
+            ChatMessage::where('sender_id', $this->selectedContactId)
+                ->where('receiver_id', auth()->id())
+                ->where('is_read', false)
+                ->update(['is_read' => true]);
+        }
+    }
+
     public function sendMessage(): void
     {
         if (empty(trim($this->message)) || !$this->selectedContactId) return;

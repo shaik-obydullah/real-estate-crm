@@ -1,6 +1,6 @@
 
 
-<div class="flex h-[calc(100vh-8rem)] bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" wire:poll.5s="loadContacts">
+<div class="flex h-[calc(100vh-8rem)] bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden" wire:poll.3s="refreshChat">
     {{-- Contacts Sidebar --}}
     <div class="w-80 border-r border-gray-200 flex flex-col flex-shrink-0">
         <div class="p-4 border-b border-gray-100">

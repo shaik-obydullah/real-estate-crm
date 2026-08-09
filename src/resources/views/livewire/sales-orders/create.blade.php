@@ -1,5 +1,5 @@
 
-<div class="max-w-5xl mx-auto space-y-6">
+<div class="w-full space-y-6">
     {{-- Header --}}
     <div class="flex items-center gap-3">
         <a href="{{ route('sales-orders.index') }}" wire:navigate class="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-lg transition">

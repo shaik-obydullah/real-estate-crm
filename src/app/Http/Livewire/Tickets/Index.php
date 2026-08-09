@@ -21,6 +21,7 @@ class Index extends Component
 
     public bool $showModal = false;
     public int $editId = 0;
+    public ?int $deleteId = null;
     public string $formSubject = '';
     public string $formDescription = '';
     public string $formPriority = 'medium';
@@ -66,10 +67,16 @@ class Index extends Component
         $this->showModal = true;
     }
 
+    public function confirmDelete(int $id)
+    {
+        $this->deleteId = $id;
+    }
+
     public function save()
     {
         $this->validate([
             'formSubject' => 'required|string|max:255',
+            'formDescription' => 'required|string|max:5000',
             'formPriority' => 'required|in:low,medium,high,urgent',
             'formStatus' => 'required|in:open,in_progress,waiting,resolved,closed',
         ]);
@@ -104,12 +111,37 @@ class Index extends Component
     public function deleteTicket(int $id)
     {
         Ticket::where('id', $id)->delete();
+        $this->deleteId = null;
         session()->flash('success', 'Ticket deleted.');
     }
 
     public function updatedSearch() { $this->resetPage(); }
     public function updatedStatusFilter() { $this->resetPage(); }
     public function updatedPriorityFilter() { $this->resetPage(); }
+    public function updatedAssignedFilter() { $this->resetPage(); }
+
+    public function getStatusColor(string $status): string
+    {
+        return match ($status) {
+            'open' => 'bg-blue-100 text-blue-700',
+            'in_progress' => 'bg-yellow-100 text-yellow-700',
+            'waiting' => 'bg-purple-100 text-purple-700',
+            'resolved' => 'bg-green-100 text-green-700',
+            'closed' => 'bg-gray-100 text-gray-500',
+            default => 'bg-gray-100 text-gray-700',
+        };
+    }
+
+    public function getPriorityColor(string $priority): string
+    {
+        return match ($priority) {
+            'urgent' => 'bg-red-100 text-red-700',
+            'high' => 'bg-orange-100 text-orange-700',
+            'medium' => 'bg-blue-100 text-blue-700',
+            'low' => 'bg-gray-100 text-gray-600',
+            default => 'bg-gray-100 text-gray-700',
+        };
+    }
 
     public function render()
     {
